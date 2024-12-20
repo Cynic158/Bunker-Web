@@ -94,16 +94,6 @@ export const permissionRoutes = [
 // 通用路由2
 export const defaultRoutes2 = [
   {
-    path: "/service",
-    component: () => import("@/views/service/index.vue"),
-    name: "service",
-    meta: {
-      title: "获取服务",
-      hidden: false,
-      icon: "Shop",
-    },
-  },
-  {
     path: "/download",
     component: () => import("@/views/download/index.vue"),
     name: "download",
