@@ -7,7 +7,7 @@ enum API {
   BIND_EMAIL_ACCOUNT = "/owner/bind_account/email",
   UNBIND = "/owner/unbind",
   BIND_MOBILE_ACCOUNT = "/owner/bind_account/mobile",
-  GET_LOGIN_SMSCODE = "/owner/bind_account//send_sms",
+  GET_LOGIN_SMSCODE = "/owner/bind_account/send_sms",
   GET_MAIL_REWARD = "/owner/get_mail_reward",
   USE_GIFT_CODE = "/owner/use_gift_code",
 }
