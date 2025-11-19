@@ -1,5 +1,5 @@
 // 通用路由
-import { RouteRecordRaw } from 'vue-router';
+import { RouteRecordRaw } from "vue-router";
 
 export const defaultRoutes: RouteRecordRaw[] = [
   {
@@ -9,8 +9,8 @@ export const defaultRoutes: RouteRecordRaw[] = [
     meta: {
       title: "用户登录",
       hidden: true,
-      icon: "Tools",
-    },
+      icon: "Tools"
+    }
   },
   {
     path: "/",
@@ -20,7 +20,7 @@ export const defaultRoutes: RouteRecordRaw[] = [
     meta: {
       title: "首页",
       hidden: true,
-      icon: "Tools",
+      icon: "Tools"
     },
     children: [
       {
@@ -30,8 +30,8 @@ export const defaultRoutes: RouteRecordRaw[] = [
         meta: {
           title: "首页",
           hidden: false,
-          icon: "HomeFilled",
-        },
+          icon: "HomeFilled"
+        }
       },
       {
         path: "/user",
@@ -40,8 +40,8 @@ export const defaultRoutes: RouteRecordRaw[] = [
         meta: {
           title: "用户菜单",
           hidden: false,
-          icon: "UserFilled",
-        },
+          icon: "UserFilled"
+        }
       },
       {
         path: "/helper",
@@ -50,8 +50,8 @@ export const defaultRoutes: RouteRecordRaw[] = [
         meta: {
           title: "Bot 账号",
           hidden: false,
-          icon: "Cpu",
-        },
+          icon: "Cpu"
+        }
       },
       {
         path: "/owner",
@@ -60,11 +60,11 @@ export const defaultRoutes: RouteRecordRaw[] = [
         meta: {
           title: "游戏账号",
           hidden: false,
-          icon: "SwitchFilled",
-        },
-      },
-    ],
-  },
+          icon: "SwitchFilled"
+        }
+      }
+    ]
+  }
 ];
 
 // 权限路由
@@ -76,19 +76,9 @@ export const permissionRoutes = [
     meta: {
       title: "管理菜单",
       hidden: false,
-      icon: "Tools",
-    },
-  },
-  {
-    path: "/neomega",
-    component: () => import("@/views/neomega/index.vue"),
-    name: "neomega",
-    meta: {
-      title: "NeOmega",
-      hidden: false,
-      icon: "Tools",
-    },
-  },
+      icon: "Tools"
+    }
+  }
 ];
 
 // 通用路由2
@@ -100,8 +90,8 @@ export const defaultRoutes2 = [
     meta: {
       title: "下载",
       hidden: false,
-      icon: "Download",
-    },
+      icon: "Download"
+    }
   },
   {
     path: "/openapi",
@@ -110,8 +100,8 @@ export const defaultRoutes2 = [
     meta: {
       title: "OpenAPI",
       hidden: false,
-      icon: "ElementPlus",
-    },
+      icon: "ElementPlus"
+    }
   },
   {
     path: "/about",
@@ -120,9 +110,9 @@ export const defaultRoutes2 = [
     meta: {
       title: "关于",
       hidden: false,
-      icon: "InfoFilled",
-    },
-  },
+      icon: "InfoFilled"
+    }
+  }
 ];
 
 // 通配路由
@@ -130,6 +120,6 @@ export const anyRoute = {
   path: "/:pathMatch(.*)*",
   redirect: "/home",
   meta: {
-    hidden: true,
-  },
+    hidden: true
+  }
 };

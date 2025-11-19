@@ -12,7 +12,7 @@ onMounted(async () => {
   try {
     SwaggerUIBundle({
       domNode: document.querySelector('.swagger-div') as HTMLElement,
-      url: '/openapi/swagger/doc.json',
+      url: `${import.meta.env.VITE_APP_BASE_URL}/openapi/swagger/doc.json`,
       docExpansion: 'none',
     });
   } catch (error) {

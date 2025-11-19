@@ -238,24 +238,4 @@ declare global {
     create_at: number;
     server_code: string;
   }
-
-  // Neomega相关
-  interface CreateLicenseInfo{
-    license_type: number;
-    identity: string;
-    identity_type: number;
-    server_id: string;
-    grant_reason: string;
-  }
-  interface DeleteLicenseInfo{
-    id: number;
-  }
-  interface QueryLicenseInfo{
-    page_num: number;
-    page_size: number;
-  }
-  interface QueryRecordInfo{
-    page_num: number;
-    page_size: number;
-  }
 }

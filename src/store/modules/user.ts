@@ -222,7 +222,7 @@ let useUserStore = defineStore("user", () => {
       // 根据得到的用户路由权限来渲染动态路由
       let filterArr: Array<string> = [];
       if (result.data.is_admin) {
-        filterArr = ["admin", "neomega"];
+        filterArr = ["admin"];
       }
       let userRoutes = filterRoute(cloneDeep(permissionRoutes), filterArr);
       let removePermission = removeFilter(
