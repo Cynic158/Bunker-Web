@@ -9,8 +9,8 @@ import axiosRetry from "axios-retry";
 
 // 创建axios实例
 let request = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API,
-  timeout: 10000,
+  baseURL: `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BASE_API}`,
+  timeout: 10000
 });
 
 // 为axios添加失败重试功能
@@ -38,7 +38,7 @@ request.interceptors.response.use(
       const filename = filenameInfo.match(/filename=(.+?)(;|$)/)[1];
       // 创建 Blob
       const blob = new Blob([response.data], {
-        type: "application/octet-stream",
+        type: "application/octet-stream"
       });
       // 创建 URL
       const url = window.URL.createObjectURL(blob);
@@ -68,7 +68,7 @@ request.interceptors.response.use(
             type: "warning",
             title: "Warning",
             message: jsonData.message || "请先登录",
-            duration: 3000,
+            duration: 3000
           });
           // 使用用户仓库的清空信息函数
           let userStore = useUserStore();
@@ -86,7 +86,7 @@ request.interceptors.response.use(
             type: "warning",
             title: "Warning",
             message: error.response.data.message || "请先登录",
-            duration: 3000,
+            duration: 3000
           });
           // 使用用户仓库的清空信息函数
           let userStore = useUserStore();
@@ -107,7 +107,7 @@ request.interceptors.response.use(
             type: "warning",
             title: "Warning",
             message: jsonData.message || "无权访问",
-            duration: 3000,
+            duration: 3000
           });
         };
         if (error.response.data instanceof Blob) {
@@ -118,7 +118,7 @@ request.interceptors.response.use(
             type: "warning",
             title: "Warning",
             message: error.response.data.message || "无权访问",
-            duration: 3000,
+            duration: 3000
           });
         }
         break;
