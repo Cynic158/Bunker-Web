@@ -62,6 +62,36 @@ export const defaultRoutes: RouteRecordRaw[] = [
           hidden: false,
           icon: "SwitchFilled"
         }
+      },
+      {
+        path: "/download",
+        component: () => import("@/views/download/index.vue"),
+        name: "download",
+        meta: {
+          title: "下载",
+          hidden: false,
+          icon: "Download"
+        }
+      },
+      {
+        path: "/openapi",
+        component: () => import("@/views/openapi/index.vue"),
+        name: "openapi",
+        meta: {
+          title: "OpenAPI",
+          hidden: false,
+          icon: "ElementPlus"
+        }
+      },
+      {
+        path: "/about",
+        component: () => import("@/views/about/index.vue"),
+        name: "about",
+        meta: {
+          title: "关于",
+          hidden: false,
+          icon: "InfoFilled"
+        }
       }
     ]
   }
@@ -81,44 +111,11 @@ export const permissionRoutes = [
   }
 ];
 
-// 通用路由2
-export const defaultRoutes2 = [
-  {
-    path: "/download",
-    component: () => import("@/views/download/index.vue"),
-    name: "download",
-    meta: {
-      title: "下载",
-      hidden: false,
-      icon: "Download"
-    }
-  },
-  {
-    path: "/openapi",
-    component: () => import("@/views/openapi/index.vue"),
-    name: "openapi",
-    meta: {
-      title: "OpenAPI",
-      hidden: false,
-      icon: "ElementPlus"
-    }
-  },
-  {
-    path: "/about",
-    component: () => import("@/views/about/index.vue"),
-    name: "about",
-    meta: {
-      title: "关于",
-      hidden: false,
-      icon: "InfoFilled"
-    }
-  }
-];
-
 // 通配路由
 export const anyRoute = {
   path: "/:pathMatch(.*)*",
   redirect: "/home",
+  name: "AnyRoute",
   meta: {
     hidden: true
   }

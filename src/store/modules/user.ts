@@ -22,52 +22,15 @@ import {
   reqRemoveAccount
 } from "@/api/user";
 // 导入路由创建动态菜单
-import {
-  defaultRoutes,
-  permissionRoutes,
-  defaultRoutes2,
-  anyRoute
-} from "@/router/routes";
+import { defaultRoutes, permissionRoutes, anyRoute } from "@/router/routes";
 import { ref } from "vue";
 import router from "@/router";
-import cloneDeep from "lodash/cloneDeep";
 // 导入加密
 import sha256 from "crypto-js/sha256";
 import md5 from "crypto-js/md5";
 import type { AxiosResponse } from "axios";
 import useSlotStore from "./slot";
 import useWebAuthnStore from "./webauthn";
-
-// 过滤权限路由，传入权限路由以及用户所拥有的的路由权限数组
-function filterRoute(asyncRoutes: any, permission: any) {
-  // 循环权限路由，返回一个过滤完成的路由列表
-  return asyncRoutes.filter((item: any) => {
-    // 如果用户的权限路由数组内有对应权限路由
-    if (permission.includes(item.name)) {
-      // 检查此路由是否有子路由，如果有就再循环一遍
-      if (item.children && item.children.length > 0) {
-        item.children = filterRoute(item.children, permission);
-      }
-      // 将对应路由添加到要返回的路由中
-      return true;
-    }
-  });
-}
-// 过滤没有权限的，由下述移除
-function removeFilter(asyncRoutes: any, permission: any) {
-  // 循环权限路由，返回一个过滤完成的路由列表
-  return asyncRoutes.filter((item: any) => {
-    // 如果用户的权限路由数组内有对应权限路由
-    if (!permission.includes(item.name)) {
-      // 检查此路由是否有子路由，如果有就再循环一遍
-      if (item.children && item.children.length > 0) {
-        item.children = removeFilter(item.children, permission);
-      }
-      // 将对应路由添加到要返回的路由中
-      return true;
-    }
-  });
-}
 
 // 创建仓库
 let useUserStore = defineStore("user", () => {
@@ -212,29 +175,20 @@ let useUserStore = defineStore("user", () => {
       slotStore.slotData = result.data.slots;
       const webauthnStore = useWebAuthnStore();
       webauthnStore.credentialsData = result.data.credentials;
-      // 根据得到的用户路由权限来渲染动态路由
-      let filterArr: Array<string> = [];
-      if (result.data.is_admin) {
-        filterArr = ["admin"];
-      }
-      let userRoutes = filterRoute(cloneDeep(permissionRoutes), filterArr);
-      let removePermission = removeFilter(
-        cloneDeep(permissionRoutes),
-        filterArr
-      );
-      menuRoutes.value = [...defaultRoutes, ...defaultRoutes2, ...userRoutes];
-      // 动态添加路由
-      userRoutes.forEach((route: any) => {
-        router.addRoute("layout", route);
-      });
-      defaultRoutes2.forEach((route: any) => {
-        router.addRoute("layout", route);
-      });
-      // 移除没有权限的路由
-      removePermission.forEach((route: any) => {
+      // 恢复默认路由
+      menuRoutes.value = [...defaultRoutes];
+      permissionRoutes.forEach((route: any) => {
         router.removeRoute(route.name);
       });
+      // 如果是管理员则添加管理员路由
+      if (result.data.is_admin) {
+        menuRoutes.value = [...defaultRoutes, ...permissionRoutes];
+        permissionRoutes.forEach((route: any) => {
+          router.addRoute("layout", route);
+        });
+      }
       // 通配路由放在最后
+      router.removeRoute(anyRoute.name);
       router.addRoute(anyRoute);
     } else {
       // 获取失败，返回一个失败的promise
