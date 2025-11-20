@@ -13,7 +13,7 @@ import {
   reqBindMobileAccount,
   reqGetLoginSmscode,
   reqGetMailReward,
-  reqUseGiftCode,
+  reqUseGiftCode
 } from "@/api/owner";
 
 import { ref } from "vue";
@@ -33,7 +33,7 @@ let useOwnerStore = defineStore("owner", () => {
       // 设置信息
       set.value = false;
       username.value = "";
-      if (result.data){
+      if (result.data) {
         set.value = result.data.set;
         username.value = result.data.username;
       }
@@ -45,67 +45,30 @@ let useOwnerStore = defineStore("owner", () => {
 
   // 邮箱创建
   let botCreateByEmail = async (emailInfo: HelperEmailInfo) => {
-    try {
-      // 计算密码强度
-      emailInfo.password_level = getPasswordLevel(emailInfo.password);
-      // 对密码进行加密
-      emailInfo.password = md5(emailInfo.password).toString();
-      let result = await reqBindEmailAccount(emailInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    // 计算密码强度
+    emailInfo.password_level = getPasswordLevel(emailInfo.password);
+    // 对密码进行加密
+    emailInfo.password = md5(emailInfo.password).toString();
+    return reqBindEmailAccount(emailInfo);
   };
 
   // 手机创建
-  let botCreateByPhone = async (phoneInfo: HelperPhoneInfo) => {
-    try {
-      let result = await reqBindMobileAccount(phoneInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botCreateByPhone = async (phoneInfo: HelperPhoneInfo) =>
+    reqBindMobileAccount(phoneInfo);
 
   // 获取验证码
-  let botPhoneCode = async (codeInfo: HelperCodeInfo) => {
-    try {
-      let result = await reqGetLoginSmscode(codeInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botPhoneCode = async (codeInfo: HelperCodeInfo) =>
+    reqGetLoginSmscode(codeInfo);
 
   // 解绑
-  let botUnbind = async () => {
-    try {
-      let result = await reqUnbind();
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botUnbind = async () => reqUnbind();
 
   // 获取邮件奖励
-  let botGetMailReward = async () => {
-    try {
-      let result = await reqGetMailReward();
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botGetMailReward = async () => reqGetMailReward();
 
   // 使用礼包码
-  let botUseGiftCode = async (giftCodeIndo: OwnerGiftCodeIndo) => {
-    try {
-      let result = await reqUseGiftCode(giftCodeIndo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botUseGiftCode = async (giftCodeIndo: OwnerGiftCodeIndo) =>
+    reqUseGiftCode(giftCodeIndo);
 
   return {
     set,
@@ -116,7 +79,7 @@ let useOwnerStore = defineStore("owner", () => {
     botCreateByPhone,
     botPhoneCode,
     botGetMailReward,
-    botUseGiftCode,
+    botUseGiftCode
   };
 });
 

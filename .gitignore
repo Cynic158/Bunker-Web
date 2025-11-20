@@ -25,3 +25,4 @@ menu
 *.sw?
 
 stats.html
+.vscode

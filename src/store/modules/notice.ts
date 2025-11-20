@@ -2,60 +2,27 @@
 import { defineStore } from "pinia";
 
 // 公告请求api
-import {
-  reqQueryByPage,
-  reqCreate,
-  reqDelete,
-  reqEdit,
-} from "@/api/notice";
+import { reqQueryByPage, reqCreate, reqDelete, reqEdit } from "@/api/notice";
 
 // 创建仓库
 let useNoticeStore = defineStore("notice", () => {
   // 获取公告数组
-  let getAnn = async (pageInfo: AnnPageInfo) => {
-    try {
-      let result = await reqQueryByPage(pageInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let getAnn = async (pageInfo: AnnPageInfo) => reqQueryByPage(pageInfo);
 
   // 创建公告
-  let annCreate = async (noticeInfo: NoticeInfo) => {
-    try {
-      let result = await reqCreate(noticeInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let annCreate = async (noticeInfo: NoticeInfo) => reqCreate(noticeInfo);
 
   // 编辑公告
-  let annEdit = async (noticeInfo: NoticeInfo) => {
-    try {
-      let result = await reqEdit(noticeInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let annEdit = async (noticeInfo: NoticeInfo) => reqEdit(noticeInfo);
 
   // 删除公告
-  let annDelete = async (id: number) => {
-    try {
-      let result = await reqDelete({ id });
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let annDelete = async (id: number) => reqDelete({ id });
 
   return {
     getAnn,
     annCreate,
     annEdit,
-    annDelete,
+    annDelete
   };
 });
 

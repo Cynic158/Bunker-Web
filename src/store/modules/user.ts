@@ -19,14 +19,14 @@ import {
   reqResetPassword,
   reqEmailBind,
   reqEmailUnbind,
-  reqRemoveAccount,
+  reqRemoveAccount
 } from "@/api/user";
 // 导入路由创建动态菜单
 import {
   defaultRoutes,
   permissionRoutes,
   defaultRoutes2,
-  anyRoute,
+  anyRoute
 } from "@/router/routes";
 import { ref } from "vue";
 import router from "@/router";
@@ -99,8 +99,6 @@ let useUserStore = defineStore("user", () => {
   let menuRoutes = ref([...defaultRoutes]);
   // 动态路由刷新flag
   let refreshFlag = ref(false);
-  // 权限按钮组
-  let btns = ref([]);
 
   // 获取会话token
   let getToken = async () => {
@@ -138,12 +136,7 @@ let useUserStore = defineStore("user", () => {
     // 先对密码进行加密
     passwordInfo.new_password = sha256(passwordInfo.new_password).toString();
     // 发起请求
-    try {
-      let result = await reqChangePassword(passwordInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    return reqChangePassword(passwordInfo);
   };
 
   // 持久化用户信息
@@ -266,83 +259,33 @@ let useUserStore = defineStore("user", () => {
   // 请求phoenixtoken
   let userReqFBToken = async (fbtokenInfo: UserFbtokenInfo) => {
     // 发起请求
-    try {
-      if (fbtokenInfo.hashed_ip !== "") {
-        fbtokenInfo.hashed_ip = md5(fbtokenInfo.hashed_ip).toString();
-      }
-      let result = await reqGetPhoenixToken(fbtokenInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
+    if (fbtokenInfo.hashed_ip !== "") {
+      fbtokenInfo.hashed_ip = md5(fbtokenInfo.hashed_ip).toString();
     }
+    return reqGetPhoenixToken(fbtokenInfo);
   };
 
   // 请求phoenixtoken
-  let userSetClientUsername = async (info: UserSetClientUsernameInfo) => {
-    // 发起请求
-    try {
-      let result = await reqSetResponseTo(info);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userSetClientUsername = async (info: UserSetClientUsernameInfo) =>
+    reqSetResponseTo(info);
 
   // 请求绑定游戏ID
-  let userGameIDBind = async (bindInfo: { server_code: string }) => {
-    // 发起请求
-    try {
-      let result = await reqBindGameId(bindInfo);
-      return result;
-      bindInfo;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userGameIDBind = async (bindInfo: { server_code: string }) =>
+    reqBindGameId(bindInfo);
 
   // 请求使用兑换码
-  let userCode = async (code: { redeem_code: string }) => {
-    // 发起请求
-    try {
-      let result = await reqUseRedeemCode(code);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userCode = async (code: { redeem_code: string }) =>
+    reqUseRedeemCode(code);
 
   // 请求生成api
-  let userGenApi = async () => {
-    // 发起请求
-    try {
-      let result = await reqGenApiKey();
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userGenApi = async () => reqGenApiKey();
 
   // 请求禁用api
-  let userDisApi = async () => {
-    // 发起请求
-    try {
-      let result = await reqDisableApiKey();
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userDisApi = async () => reqDisableApiKey();
 
   // 请求邮箱验证码
-  let userRequestEmailVerifyCode = async (info: UserEmailVerifyCodeInfo) => {
-    // 发起请求
-    try {
-      let result = await reqRequestEmailVerifyCode(info);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userRequestEmailVerifyCode = async (info: UserEmailVerifyCodeInfo) =>
+    reqRequestEmailVerifyCode(info);
 
   // 请求重置密码
   let userResetPassword = async (resetPasswordInfo: UserResetPasswordInfo) => {
@@ -350,35 +293,16 @@ let useUserStore = defineStore("user", () => {
     const hashpassword = sha256(resetPasswordInfo.new_password).toString();
     resetPasswordInfo.new_password = hashpassword;
     // 发起请求
-    try {
-      let result = await reqResetPassword(resetPasswordInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    return reqResetPassword(resetPasswordInfo);
   };
 
   // 请求邮箱绑定
-  let userEmailBind = async (emailBindInfo: UserEmailBindInfo) => {
-    // 发起请求
-    try {
-      let result = await reqEmailBind(emailBindInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userEmailBind = async (emailBindInfo: UserEmailBindInfo) =>
+    reqEmailBind(emailBindInfo);
 
   // 请求邮箱解绑
-  let userEmailUnbind = async (emailUnbindInfo: UserEmailUnbindInfo) => {
-    // 发起请求
-    try {
-      let result = await reqEmailUnbind(emailUnbindInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let userEmailUnbind = async (emailUnbindInfo: UserEmailUnbindInfo) =>
+    reqEmailUnbind(emailUnbindInfo);
 
   // 请求删除账户
   let userDeleteAccount = async (deleteAccountInfo: UserRemoveAccountInfo) => {
@@ -404,7 +328,6 @@ let useUserStore = defineStore("user", () => {
     menuRoutes,
     clearUser,
     refreshFlag,
-    btns,
     getToken,
     userRegLog,
     upermission,
@@ -425,7 +348,7 @@ let useUserStore = defineStore("user", () => {
     userResetPassword,
     userEmailBind,
     userEmailUnbind,
-    userDeleteAccount,
+    userDeleteAccount
   };
 });
 

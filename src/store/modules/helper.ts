@@ -13,7 +13,7 @@ import {
   reqGetStatus,
   reqUnbind,
   reqBindMobileAccount,
-  reqGetLoginSmscode,
+  reqGetLoginSmscode
 } from "@/api/helper";
 
 import { ref } from "vue";
@@ -49,68 +49,31 @@ let useHelperStore = defineStore("helper", () => {
   };
 
   // 游客创建
-  let botCreate = async () => {
-    try {
-      let result = await reqCreate();
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botCreate = async () => reqCreate();
 
   // 邮箱创建
   let botCreateByEmail = async (emailInfo: HelperEmailInfo) => {
-    try {
-      // 计算密码强度
-      emailInfo.password_level = getPasswordLevel(emailInfo.password);
-      // 对密码进行加密
-      emailInfo.password = md5(emailInfo.password).toString();
-      let result = await reqBindEmailAccount(emailInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
+    // 计算密码强度
+    emailInfo.password_level = getPasswordLevel(emailInfo.password);
+    // 对密码进行加密
+    emailInfo.password = md5(emailInfo.password).toString();
+    return reqBindEmailAccount(emailInfo);
   };
 
   // 手机创建
-  let botCreateByPhone = async (phoneInfo: HelperPhoneInfo) => {
-    try {
-      let result = await reqBindMobileAccount(phoneInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botCreateByPhone = async (phoneInfo: HelperPhoneInfo) =>
+    reqBindMobileAccount(phoneInfo);
 
   // 获取验证码
-  let botPhoneCode = async (codeInfo: HelperCodeInfo) => {
-    try {
-      let result = await reqGetLoginSmscode(codeInfo);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botPhoneCode = async (codeInfo: HelperCodeInfo) =>
+    reqGetLoginSmscode(codeInfo);
 
   // 解绑
-  let botUnbind = async () => {
-    try {
-      let result = await reqUnbind();
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botUnbind = async () => reqUnbind();
 
   // 更名
-  let botChangeName = async (username: { username: string }) => {
-    try {
-      let result = await reqChangeName(username);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let botChangeName = async (username: { username: string }) =>
+    reqChangeName(username);
 
   return {
     set,
@@ -122,7 +85,7 @@ let useHelperStore = defineStore("helper", () => {
     botUnbind,
     botChangeName,
     botCreateByPhone,
-    botPhoneCode,
+    botPhoneCode
   };
 });
 

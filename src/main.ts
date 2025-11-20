@@ -13,8 +13,6 @@ import gloablComponent from "./components/index";
 import router from "./router";
 // 注册仓库
 import store from "./store";
-// 注册指令
-import { hasBtn } from "./directive/has";
 
 const app = createApp(App);
 
@@ -22,6 +20,5 @@ const app = createApp(App);
 app.use(gloablComponent);
 app.use(store);
 app.use(router);
-hasBtn(app);
 
 app.mount("#app");

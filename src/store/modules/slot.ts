@@ -5,41 +5,21 @@ import { defineStore } from "pinia";
 import {
   reqDeleteSlot,
   reqSetSlotGameId,
-  reqExtendSlotExpireTime,
+  reqExtendSlotExpireTime
 } from "@/api/slot";
 import { ref } from "vue";
 
 // 创建仓库
 let useSlotStore = defineStore("slot", () => {
   // 请求删除Slot
-  let deleteSlot = async (info: DeleteSlotInfo) => {
-    try {
-      let result = await reqDeleteSlot(info);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let deleteSlot = async (info: DeleteSlotInfo) => reqDeleteSlot(info);
 
   // 请求设置Slot游戏ID
-  let setSlotGameID = async (info: SetSlotGameIdInfo) => {
-    try {
-      let result = await reqSetSlotGameId(info);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let setSlotGameID = async (info: SetSlotGameIdInfo) => reqSetSlotGameId(info);
 
   // 请求删除Slot
-  let extendSlotExpireTime = async (info: ExtendSlotExpireTime) => {
-    try {
-      let result = await reqExtendSlotExpireTime(info);
-      return result;
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  };
+  let extendSlotExpireTime = async (info: ExtendSlotExpireTime) =>
+    reqExtendSlotExpireTime(info);
 
   // slot数据
   let slotData = ref<Array<Slot>>([]);
@@ -49,7 +29,7 @@ let useSlotStore = defineStore("slot", () => {
     deleteSlot,
     setSlotGameID,
     extendSlotExpireTime,
-    slotData,
+    slotData
   };
 });
 
