@@ -28,7 +28,7 @@ export default ({ mode }) =>
         // 其他环境变量也可以在这里设置
       },
     },
-    base: "/static",
+    base: "/",
     build: {
       rollupOptions: {
         treeshake: true,
