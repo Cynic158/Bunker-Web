@@ -1,9 +1,6 @@
 <template>
   <div>
-    <el-card
-      shadow="hover"
-      v-loading="createDefaultLoading || queryLoading"
-      >
+    <el-card shadow="hover" v-loading="createDefaultLoading || queryLoading">
       <template #header>
         <div class="card-header">
           <span style="margin-right: 16px">Bot 账号</span>
@@ -19,14 +16,14 @@
             >Bot 账号是进入服务器时使用的账号, 建议使用游客登录</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-alert
           :title="alertTitle"
           :type="alertType"
           show-icon
           :closable="false"
         />
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <div style="display: inline-flex; align-items: center; flex-wrap: wrap">
           <el-button
             @click="getBotStatus"
@@ -62,7 +59,7 @@
       <template #header>
         <div class="card-header">
           游客登录
-          <el-tag type="success" style="margin-left: 5px">推荐</el-tag> 
+          <el-tag type="success" style="margin-left: 5px">推荐</el-tag>
         </div>
       </template>
       <div>
@@ -74,7 +71,7 @@
             >新建一个游客账号作为Bot</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-alert
           v-if="createAlertTitle"
           style="margin-bottom: 16px"
@@ -87,11 +84,7 @@
           <el-button type="primary" round @click="createBotByDefault"
             >创建</el-button
           >
-          <el-button
-            type="warning"
-            round
-            @click="verifyLink"
-            v-if="guestVerify"
+          <el-button type="warning" round @click="verifyLink" v-if="guestVerify"
             >验证</el-button
           >
         </div>
@@ -107,7 +100,7 @@
       <template #header>
         <div class="card-header">
           手机登录
-          <el-tag type="warning" style="margin-left: 5px">人机验证</el-tag>  
+          <el-tag type="warning" style="margin-left: 5px">人机验证</el-tag>
         </div>
       </template>
       <div>
@@ -115,13 +108,11 @@
           <el-icon>
             <ChatDotRound />
           </el-icon>
-          <span style="margin-left: 12px; color: dimgray"
-            >
+          <span style="margin-left: 12px; color: dimgray">
             使用您提供的手机账号作为Bot (可自行更换皮肤)
-            </span
-          >
+          </span>
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-alert
           v-if="phoneAlertTitle"
           style="margin-bottom: 16px"
@@ -144,7 +135,9 @@
             <el-input v-model="phoneData.code" placeholder="请输入验证码" />
           </el-form-item>
           <el-form-item style="margin-bottom: 0">
-            <div style="display: inline-flex; align-items: center; flex-wrap: wrap">
+            <div
+              style="display: inline-flex; align-items: center; flex-wrap: wrap"
+            >
               <el-button
                 type="primary"
                 native-type="submit"
@@ -163,32 +156,22 @@
                     @click="getCode"
                     :loading="codeloadingflag || captchaExecutingFlag"
                     :disabled="codedisabled"
-                    >获取验证码</el-button
+                    >{{
+                      captchaExecutingFlag
+                        ? "检查环境中"
+                        : codeloadingflag
+                          ? "处理中"
+                          : "获取验证码"
+                    }}
+                  </el-button>
                   >
                 </template>
-                <div
-                  class="cf-turnstile"
-                  data-sitekey="0x4AAAAAAAQhC3f_WRwvJ19O"
-                  data-callback="onRobotSuccess"
-                  data-error-callback="onRobotError"
-                  data-expired-callback="onRobotError"
-                  data-before-interactive-callback="onRobotBeforeInteractive"
-                  data-after-interactive-callback="onRobotAfterInteractive"
-                  data-size="normal"
-                  :data-theme="
-                    exportedLocalStorage.getItem('DARKMODE') === 'true'
-                      ? 'dark'
-                      : 'light'
-                  "
-                ></div>
+                <div class="cf-turnstile"></div>
               </el-popover>
               <el-button v-if="codeTimeShow" type="primary" disabled>{{
-                codeTimes
+                `${codeTimes}s`
               }}</el-button>
-              <el-button
-                type="warning"
-                @click="verifyLink"
-                v-if="phoneVerify"
+              <el-button type="warning" @click="verifyLink" v-if="phoneVerify"
                 >验证</el-button
               >
             </div>
@@ -204,9 +187,7 @@
       style="margin-top: 12px"
     >
       <template #header>
-        <div class="card-header">
-          邮箱登录
-        </div>
+        <div class="card-header">邮箱登录</div>
       </template>
       <div>
         <div class="card-footer">
@@ -217,7 +198,7 @@
             >使用您提供的邮箱账号作为Bot (可自行更换皮肤)</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-alert
           v-if="emailAlertTitle"
           style="margin-bottom: 16px"
@@ -247,17 +228,16 @@
             />
           </el-form-item>
           <el-form-item style="margin-bottom: 0">
-            <div style="display: inline-flex; align-items: center; flex-wrap: wrap">
+            <div
+              style="display: inline-flex; align-items: center; flex-wrap: wrap"
+            >
               <el-button
                 type="primary"
                 native-type="submit"
                 @click="createBotByEmail"
                 >创建</el-button
               >
-              <el-button
-                type="warning"
-                @click="verifyLink"
-                v-if="emailVerify"
+              <el-button type="warning" @click="verifyLink" v-if="emailVerify"
                 >验证</el-button
               >
             </div>
@@ -284,7 +264,7 @@
             >更改 Bot 的游戏昵称</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-form
           @submit.prevent
           class="botname-form-container"
@@ -377,7 +357,7 @@ let realNameLink = () => {
   window.open(helperStore.realname_url, "_blank");
 };
 // 验证链接函数
-let verify_url = ""
+let verify_url = "";
 let verifyLink = () => {
   window.open(verify_url, "_blank");
 };
@@ -390,15 +370,16 @@ let getBotStatus = async () => {
       alertType.value = "success";
       if (result.data) {
         alertTitle.value =
-        result.data.username +
-        ` [Lv.${result.data.lv} (${result.data.exp}/${result.data.total_exp})]`;
+          result.data.username +
+          ` [Lv.${result.data.lv} (${result.data.exp}/${result.data.total_exp})]`;
       }
     } else {
       alertType.value = "warning";
       alertTitle.value = result.message;
     }
     isLoaded.value = true;
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     queryLoading.value = false;
   }
 };
@@ -435,19 +416,20 @@ let createBotByDefault = async () => {
           type: "warning",
           title: "Warning",
           message: "请按要求完成验证后再次点击创建按钮",
-          duration: 3000,
+          duration: 3000
         });
-      }else{
+      } else {
         createAlertType.value = "error";
         ElNotification({
           type: "error",
           title: "Error",
           message: result.message,
-          duration: 3000,
+          duration: 3000
         });
       }
     }
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     createDefaultLoading.value = false;
     getBotStatus();
   }
@@ -459,7 +441,7 @@ let emailform: EleFormRef = ref(null);
 // 表单数据
 let emailData = reactive({
   username: "",
-  password: "",
+  password: ""
 });
 // 清空表单
 let clearForm = () => {
@@ -490,17 +472,17 @@ const rules = {
     {
       required: true,
       message: "账号不能为空",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { validator: validateEmail, trigger: "blur" },
+    { validator: validateEmail, trigger: "blur" }
   ],
   password: [
     {
       required: true,
       message: "密码不能为空",
-      trigger: "blur",
-    },
-  ],
+      trigger: "blur"
+    }
+  ]
 };
 // 邮箱卡片提示
 // 提示类型
@@ -518,7 +500,7 @@ let createBotByEmail = async () => {
     let emailInfo = {
       username: "",
       password: "",
-      password_level: -1,
+      password_level: -1
     };
     emailInfo.username = emailData.username;
     emailInfo.password = emailData.password;
@@ -534,11 +516,12 @@ let createBotByEmail = async () => {
         emailAlertType.value = "warning";
         verify_url = result.data.verify_url;
         emailVerify.value = true;
-      }else{
+      } else {
         emailAlertType.value = "error";
       }
     }
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     createDefaultLoading.value = false;
     getBotStatus();
   }
@@ -550,7 +533,7 @@ let phoneform: EleFormRef = ref(null);
 // 表单数据
 let phoneData = reactive({
   phone: "",
-  code: "",
+  code: ""
 });
 // 清空表单
 let clearPhoneForm = () => {
@@ -580,10 +563,10 @@ const phoneRules = {
     {
       required: true,
       message: "手机号不能为空",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { validator: validatePhone, trigger: "blur" },
-  ],
+    { validator: validatePhone, trigger: "blur" }
+  ]
 };
 // 手机卡片提示
 // 提示类型
@@ -599,64 +582,53 @@ let codeTimes = ref(60);
 // 显示倒计时
 let codeTimeShow = ref(false);
 // 人机验证
-let captchaExecutingFlag = ref(true);
-// 刷新验证码
-let refreshCaptcha = () => {
-  captchaExecutingFlag.value = true;
-  turnstile.reset();
-  turnstile.execute();
-};
+let captchaExecutingFlag = ref(false);
 // 验证按钮
 let phoneVerify = ref(false);
-
-// 人机验证成功回调
-var onRobotSuccess = async () => {
-  captchaExecutingFlag.value = false;
-};
-// 人机验证交互前回调
-var onRobotBeforeInteractive = async () => {
-  robotVisible.value = true;
-};
-// 人机验证交互后回调
-var onRobotAfterInteractive = async () => {
-  robotVisible.value = false;
-};
-// 人机验证错误回调
-var onRobotError = async () => {
-  refreshCaptcha();
-};
-// 添加人机验证
-onMounted(() => {
-  window.onRobotBeforeInteractive = onRobotBeforeInteractive;
-  window.onRobotAfterInteractive = onRobotAfterInteractive;
-  window.onRobotSuccess = onRobotSuccess;
-  window.onRobotError = onRobotError;
+// 请求人机验证
+const requestWithCaptcha = (
+  successCallback: (token: string) => void,
+  failedCallback: () => void
+) => {
+  captchaExecutingFlag.value = true;
   turnstile.remove();
-  turnstile.render(".cf-turnstile");
-});
+  turnstile.render(".cf-turnstile", {
+    sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+    theme:
+      exportedLocalStorage.getItem("DARKMODE") === "true" ? "dark" : "light",
+    size: "normal",
+    callback: async (token: string, _: boolean) => {
+      captchaExecutingFlag.value = false;
+      robotVisible.value = false;
+      turnstile.remove();
+      successCallback(token);
+    },
+    "error-callback": () => {
+      ElNotification({
+        type: "warning",
+        title: "Warning",
+        message: "人机验证未通过",
+        duration: 3000
+      });
+      captchaExecutingFlag.value = false;
+      robotVisible.value = false;
+      turnstile.remove();
+      failedCallback();
+    },
+    "before-interactive-callback": () => {
+      robotVisible.value = true;
+    },
+    "after-interactive-callback": () => {
+      robotVisible.value = false;
+    }
+  });
+};
 // 销毁全局变量
 onUnmounted(() => {
   turnstile.remove();
-  window.onRobotBeforeInteractive = null;
-  window.onRobotAfterInteractive = null;
-  window.onRobotSuccess = null;
-  window.onRobotError = null;
 });
 // 获取验证码
 let getCode = async () => {
-  let captchaToken = turnstile.getResponse();
-  if (!captchaToken) {
-    // 消息提示
-    ElNotification({
-      type: "warning",
-      title: "Warning",
-      message: "人机验证未通过",
-      duration: 3000,
-    });
-    // 重置人机验证
-    refreshCaptcha();
-    return;
-  }
   // 校验表单
   try {
     await phoneform.value!.validate();
@@ -666,45 +638,52 @@ let getCode = async () => {
   // 显示加载
   codeloadingflag.value = true;
   codedisabled.value = true;
-  let codeInfo = {
-    mobile: phoneData.phone,
-    captcha_token: captchaToken,
-  };
-  try {
-    // 仓库发起验证码请求
-    let result = await helperStore.botPhoneCode(codeInfo);
-    phoneVerify.value = false;
-    phoneAlertTitle.value = result.message;
-    if (result.success) {
-      phoneAlertType.value = "success";
-      // 成功，开始倒计时
-      codedisabled.value = true;
-      codeTimeShow.value = true;
-      const timer = setInterval(() => {
-        codeTimes.value--;
-        if (codeTimes.value < 1) {
-          codeTimes.value = 60;
+  // 请求人机验证
+  requestWithCaptcha(
+    async (token: string) => {
+      try {
+        // 仓库发起验证码请求
+        let result = await helperStore.botPhoneCode({
+          mobile: phoneData.phone,
+          captcha_token: token
+        });
+        phoneVerify.value = false;
+        phoneAlertTitle.value = result.message;
+        if (result.success) {
+          phoneAlertType.value = "success";
+          // 成功，开始倒计时
+          codedisabled.value = true;
+          codeTimeShow.value = true;
+          const timer = setInterval(() => {
+            codeTimes.value--;
+            if (codeTimes.value < 1) {
+              codeTimes.value = 60;
+              codedisabled.value = false;
+              codeTimeShow.value = false;
+              clearInterval(timer);
+            }
+          }, 1000);
+        } else {
+          if (result.data && result.data.verify_url) {
+            phoneAlertType.value = "warning";
+            verify_url = result.data.verify_url;
+            phoneVerify.value = true;
+          } else {
+            phoneAlertType.value = "error";
+          }
           codedisabled.value = false;
-          codeTimeShow.value = false;
-          clearInterval(timer);
         }
-      }, 1000);
-    } else {
-      if (result.data && result.data.verify_url) {
-        phoneAlertType.value = "warning";
-        verify_url = result.data.verify_url;
-        phoneVerify.value = true;
-      }else{
-        phoneAlertType.value = "error";
+      } catch (error: any) {
+        codedisabled.value = false;
+      } finally {
+        codeloadingflag.value = false;
       }
+    },
+    () => {
+      codeloadingflag.value = false;
       codedisabled.value = false;
     }
-  } catch (error: any) {
-    codedisabled.value = false;
-  } finally {
-    refreshCaptcha();
-    codeloadingflag.value = false;
-  }
+  );
 };
 // 手机登录
 let createBotByPhone = async () => {
@@ -714,7 +693,7 @@ let createBotByPhone = async () => {
     createDefaultLoading.value = true;
     let phoneInfo = {
       mobile: "",
-      smscode: "",
+      smscode: ""
     };
     phoneInfo.mobile = phoneData.phone;
     phoneInfo.smscode = phoneData.code;
@@ -730,11 +709,12 @@ let createBotByPhone = async () => {
         phoneAlertType.value = "warning";
         verify_url = result.data.verify_url;
         phoneVerify.value = true;
-      }else{
+      } else {
         phoneAlertType.value = "error";
       }
     }
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     createDefaultLoading.value = false;
     getBotStatus();
   }
@@ -758,17 +738,18 @@ let unbindBot = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     } else {
       ElNotification({
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     unbindLoading.value = false;
     unbindDialogVisible.value = false;
     getBotStatus();
@@ -788,7 +769,7 @@ let changeDialog = () => {
 let botnameform: EleFormRef = ref(null);
 // 表单数据
 let botnameData = reactive({
-  username: "",
+  username: ""
 });
 // 清空表单
 let clearChangeForm = () => {
@@ -808,16 +789,16 @@ const rules2 = {
     {
       required: true,
       message: "新昵称不能为空",
-      trigger: "blur",
-    },
-  ],
+      trigger: "blur"
+    }
+  ]
 };
 let changeBotName = async () => {
   try {
     await botnameform.value!.validate();
     changeLoading.value = true;
     let botname = {
-      username: "",
+      username: ""
     };
     botname.username = botnameData.username;
     let result = await helperStore.botChangeName(botname);
@@ -826,7 +807,7 @@ let changeBotName = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       clearChangeForm();
     } else {
@@ -834,10 +815,11 @@ let changeBotName = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     changeLoading.value = false;
     changeDialogVisible.value = false;
     getBotStatus();

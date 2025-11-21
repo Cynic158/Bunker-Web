@@ -27,13 +27,6 @@ declare global {
     value: FormContext;
   }
   type EleFormRef = Ref<EleHTMLFormElement | null>;
-  // window
-  interface Window {
-    onRobotBeforeInteractive: Function | null;
-    onRobotAfterInteractive: Function | null;
-    onRobotSuccess: Function | null;
-    onRobotError: Function | null;
-  }
   // 人机校验
   declare var turnstile: TurnstileObject;
 

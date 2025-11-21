@@ -178,7 +178,7 @@ let useUserStore = defineStore("user", () => {
       // 恢复默认路由
       menuRoutes.value = [...defaultRoutes];
       permissionRoutes.forEach((route: any) => {
-        router.removeRoute(route.name);
+        if (router.hasRoute(route.name)) router.removeRoute(route.name);
       });
       // 如果是管理员则添加管理员路由
       if (result.data.is_admin) {
@@ -188,7 +188,7 @@ let useUserStore = defineStore("user", () => {
         });
       }
       // 通配路由放在最后
-      router.removeRoute(anyRoute.name);
+      if (router.hasRoute(anyRoute.name)) router.removeRoute(anyRoute.name);
       router.addRoute(anyRoute);
     } else {
       // 获取失败，返回一个失败的promise

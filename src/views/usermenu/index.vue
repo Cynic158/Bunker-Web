@@ -5,22 +5,10 @@
       placement="top"
       :width="326"
       :virtual-ref="dynamicTurnstileVirtualRef"
-      :visible="robotVisible && (dynamicTurnstileVirtualRef !== undefined)"
+      :visible="robotVisible && dynamicTurnstileVirtualRef !== undefined"
       virtual-triggering
     >
-      <div
-        class="cf-turnstile"
-        data-sitekey="0x4AAAAAAAQhC3f_WRwvJ19O"
-        data-callback="onRobotSuccess"
-        data-error-callback="onRobotError"
-        data-expired-callback="onRobotError"
-        data-before-interactive-callback="onRobotBeforeInteractive"
-        data-after-interactive-callback="onRobotAfterInteractive"
-        data-size="normal"
-        :data-theme="
-          exportedLocalStorage.getItem('DARKMODE') === 'true' ? 'dark' : 'light'
-        "
-      ></div>
+      <div class="cf-turnstile"></div>
     </el-popover>
     <el-card shadow="hover">
       <template #header>
@@ -35,7 +23,7 @@
             您可以登入绑定的游戏ID下的所有服务器
           </span>
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-descriptions
           class="margin-top"
           :direction="settingStore.infoDirection"
@@ -124,7 +112,7 @@
             >使用兑换码更新您的用户中心账户或新建 Slot</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-form
           @submit.prevent
           class="limited-form-container"
@@ -165,7 +153,7 @@
             >输入服务器号来绑定您的游戏ID, 绑定前需要先创建 Bot 账号</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-form
           @submit.prevent
           class="limited-form-container"
@@ -191,11 +179,7 @@
       </div>
     </el-card>
 
-    <el-card
-      shadow="hover"
-      v-loading="slotLoading"
-      style="margin-top: 12px"
-    >
+    <el-card shadow="hover" v-loading="slotLoading" style="margin-top: 12px">
       <template #header>
         <div class="card-header">Slots</div>
       </template>
@@ -204,10 +188,11 @@
           <el-icon>
             <ChatDotRound />
           </el-icon>
-          <span style="margin-left: 12px; color: dimgray">Slot 均为玩家 Slot (绑定玩家游戏ID), 且仅在账户有效期内可用
+          <span style="margin-left: 12px; color: dimgray"
+            >Slot 均为玩家 Slot (绑定玩家游戏ID), 且仅在账户有效期内可用
           </span>
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-table
           :data="slotStore.slotData"
           class="limited-form-container"
@@ -230,7 +215,7 @@
             </template>
           </el-table-column>
           <el-table-column label="有效期至" width="160">
-            <template  #default="scope">
+            <template #default="scope">
               {{ getTimeStr2(scope.row.expire_at) }}
             </template>
           </el-table-column>
@@ -275,7 +260,7 @@
             限制</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <Precode
           v-if="tokenContent"
           :code="tokenContent"
@@ -322,7 +307,7 @@
             >在此处设置程序的默认游戏名, 可以不设置</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-form
           @submit.prevent
           class="limited-form-container"
@@ -363,7 +348,7 @@
             >更新您的登录密码</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-form
           @submit.prevent
           class="password-form-container"
@@ -441,13 +426,13 @@
             >管理绑定至您账户的通行密钥</span
           >
         </div>
-        <el-divider border-style="dashed"/>
+        <el-divider border-style="dashed" />
         <el-table
           :data="webAuthnStore.credentialsData"
           class="limited-form-container"
           max-height="250"
         >
-          <el-table-column prop="create_at" label="创建时间" width="160" >
+          <el-table-column prop="create_at" label="创建时间" width="160">
             <template #default="scope">
               {{ getTimeStr2(scope.row.create_at) }}
             </template>
@@ -495,7 +480,7 @@
           >为您的账户绑定安全邮箱, 绑定后可进行修改密码等操作</span
         >
       </div>
-      <el-divider border-style="dashed"/>
+      <el-divider border-style="dashed" />
       <el-form
         @submit.prevent
         class="limited-form-container"
@@ -554,20 +539,12 @@
           请勿随意泄露</span
         >
       </div>
-      <el-divider border-style="dashed"/>
+      <el-divider border-style="dashed" />
       <Precode v-if="userStore.uapi" :code="userStore.uapi" :type="'none'" />
-      <el-button
-        type="primary"
-        round
-        @click="apikeyGen"
-        v-if="!userStore.uapi"
+      <el-button type="primary" round @click="apikeyGen" v-if="!userStore.uapi"
         >生成</el-button
       >
-      <el-button
-        type="danger"
-        round
-        @click="apikeyDis"
-        v-if="userStore.uapi"
+      <el-button type="danger" round @click="apikeyDis" v-if="userStore.uapi"
         >删除</el-button
       >
     </el-card>
@@ -586,7 +563,7 @@
           解绑您的账户的安全邮箱, 解绑后无法进行修改密码等操作
         </span>
       </div>
-      <el-divider border-style="dashed"/>
+      <el-divider border-style="dashed" />
       <el-form
         @submit.prevent
         class="limited-form-container"
@@ -644,7 +621,7 @@
           立即删除账户的所有信息且无法恢复, 请谨慎操作
         </span>
       </div>
-      <el-divider border-style="dashed"/>
+      <el-divider border-style="dashed" />
       <el-form
         @submit.prevent
         class="limited-form-container"
@@ -715,9 +692,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="deleteSlotDialogVisible = false">取消</el-button>
-          <el-button type="danger" @click="deleteSlot"
-            >确定</el-button
-          >
+          <el-button type="danger" @click="deleteSlot">确定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -735,12 +710,17 @@
         ref="extendSlotExpireTimeForm"
       >
         <el-form-item label="兑换码" prop="redeem_code">
-          <el-input v-model="extendSlotExpireTimeData.redeem_code" placeholder="请输入兑换码"/>
+          <el-input
+            v-model="extendSlotExpireTimeData.redeem_code"
+            placeholder="请输入兑换码"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="extendSlotExpireTimeDialogVisible = false">取消</el-button>
+          <el-button @click="extendSlotExpireTimeDialogVisible = false"
+            >取消</el-button
+          >
           <el-button
             :loading="slotLoading"
             type="warning"
@@ -764,12 +744,17 @@
         ref="setSlotGameIdForm"
       >
         <el-form-item label="服务器号" prop="server_code">
-          <el-input v-model="setSlotGameIdData.server_code" placeholder="请输入要绑定的服务器号"/>
+          <el-input
+            v-model="setSlotGameIdData.server_code"
+            placeholder="请输入要绑定的服务器号"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="setSlotGameIdDialogVisible = false">取消</el-button>
+          <el-button @click="setSlotGameIdDialogVisible = false"
+            >取消</el-button
+          >
           <el-button
             :loading="slotLoading"
             type="warning"
@@ -794,7 +779,7 @@ import {
   onMounted,
   onUnmounted,
   reactive,
-  ref,
+  ref
 } from "vue";
 // 导入WebAuthn仓库
 import useWebAuthnStore from "@/store/modules/webauthn";
@@ -807,7 +792,7 @@ import { useRouter } from "vue-router";
 // 导入WebAuthn
 import {
   startRegistration,
-  browserSupportsWebAuthn,
+  browserSupportsWebAuthn
 } from "@simplewebauthn/browser";
 // 导出本地仓库给HTML使用
 let exportedLocalStorage = localStorage;
@@ -817,7 +802,7 @@ let settingStore = useSettingStore();
 let userStore = useUserStore();
 // 使用WebAuthn仓库
 let webAuthnStore = useWebAuthnStore();
-let slotStore = useSlotStore()
+let slotStore = useSlotStore();
 // 使用路由
 let $router = useRouter();
 // 人机验证动态虚拟ref
@@ -825,7 +810,7 @@ let dynamicTurnstileVirtualRef = ref(undefined);
 // 人机验证显示
 const robotVisible = ref(false);
 // 人机验证
-let captchaExecutingFlag = ref(true);
+let captchaExecutingFlag = ref(false);
 // 修改密码发送验证码按钮ref
 const changePasswordEmailCodeBtnRef = ref();
 // 绑定邮箱发送验证码按钮ref
@@ -835,28 +820,43 @@ const emailUnbindEmailCodeBtnRef = ref();
 // 删除账户发送验证码按钮ref
 const deleteAccountEmailCodeBtnRef = ref();
 
-// 刷新验证码
-let refreshCaptcha = () => {
+// 请求人机验证
+const requestWithCaptcha = (
+  successCallback: (token: string) => void,
+  failedCallback: () => void
+) => {
   captchaExecutingFlag.value = true;
-  turnstile.reset();
-  turnstile.execute();
-};
-
-// 人机验证成功回调
-var onRobotSuccess = async () => {
-  captchaExecutingFlag.value = false;
-};
-// 人机验证交互前回调
-var onRobotBeforeInteractive = async () => {
-  robotVisible.value = true;
-};
-// 人机验证交互后回调
-var onRobotAfterInteractive = async () => {
-  robotVisible.value = false;
-};
-// 人机验证错误回调
-var onRobotError = async () => {
-  refreshCaptcha();
+  turnstile.remove();
+  turnstile.render(".cf-turnstile", {
+    sitekey: import.meta.env.VITE_TURNSTILE_SITE_KEY,
+    theme:
+      exportedLocalStorage.getItem("DARKMODE") === "true" ? "dark" : "light",
+    size: "normal",
+    callback: async (token: string, _: boolean) => {
+      captchaExecutingFlag.value = false;
+      robotVisible.value = false;
+      turnstile.remove();
+      successCallback(token);
+    },
+    "error-callback": () => {
+      ElNotification({
+        type: "warning",
+        title: "Warning",
+        message: "人机验证未通过",
+        duration: 3000
+      });
+      captchaExecutingFlag.value = false;
+      robotVisible.value = false;
+      turnstile.remove();
+      failedCallback();
+    },
+    "before-interactive-callback": () => {
+      robotVisible.value = true;
+    },
+    "after-interactive-callback": () => {
+      robotVisible.value = false;
+    }
+  });
 };
 
 let apikeyLoading = ref(false);
@@ -870,7 +870,7 @@ let apikeyGen = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     } else {
       // 获取失败
@@ -878,7 +878,7 @@ let apikeyGen = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error) {
@@ -897,7 +897,7 @@ let apikeyDis = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     } else {
       // 获取失败
@@ -905,7 +905,7 @@ let apikeyDis = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error) {
@@ -953,7 +953,7 @@ const userPermissionStr = computed(() => {
 // token部分
 // 表单数据
 let tokenData = reactive({
-  hashedIp: "",
+  hashedIp: ""
 });
 // Alert Title
 let tokenContent = ref("");
@@ -964,14 +964,14 @@ let tokenDownload = async () => {
   tokenLoading.value = true;
   try {
     let result = await userStore.userReqFBToken({
-      hashed_ip: tokenData.hashedIp,
+      hashed_ip: tokenData.hashedIp
     });
     if (!result.message) {
       ElNotification({
         type: "success",
         title: "Success",
         message: "请留意浏览器下载内容",
-        duration: 3000,
+        duration: 3000
       });
       tokenContent.value = result.toString();
     } else {
@@ -979,7 +979,7 @@ let tokenDownload = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       tokenContent.value = "";
     }
@@ -993,7 +993,7 @@ let tokenDownload = async () => {
 // 设置游戏名部分
 // 表单数据
 let clientUsernameData = reactive({
-  client_username: "",
+  client_username: ""
 });
 // 设置游戏名获取loading
 let clientUsernameLoading = ref(false);
@@ -1002,26 +1002,26 @@ let setClientUsername = async () => {
   clientUsernameLoading.value = true;
   try {
     let result = await userStore.userSetClientUsername({
-      client_username: clientUsernameData.client_username,
+      client_username: clientUsernameData.client_username
     });
     if (result.success) {
       ElNotification({
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     } else {
       ElNotification({
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error) {
     //console.log(error);
-  }finally{
+  } finally {
     await getInfo();
     clientUsernameData.client_username = userStore.clientName;
     clientUsernameLoading.value = false;
@@ -1035,7 +1035,7 @@ let passwordform: EleFormRef = ref(null);
 let passwordData = reactive({
   emailVerifyCode: "",
   newPassword: "",
-  repassword: "",
+  repassword: ""
 });
 // 清空表单
 let clearForm = () => {
@@ -1049,7 +1049,7 @@ let clearForm = () => {
         passwordform.value.clearValidate([
           "emailVerifyCode",
           "newPassword",
-          "repassword",
+          "repassword"
         ]);
       }
     }, 200);
@@ -1085,105 +1085,105 @@ const bindEmailRules = {
     {
       required: true,
       message: "请输入邮箱",
-      trigger: "blur",
+      trigger: "blur"
     },
     {
       type: "email",
       message: "请输入正确的邮箱",
-      trigger: ["blur", "change"],
-    },
+      trigger: ["blur", "change"]
+    }
   ],
   emailVerifyCode: [
     {
       required: true,
       message: "请输入邮箱验证码",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" },
-  ],
+    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" }
+  ]
 };
 const unbindEmailRules = {
   emailVerifyCode: [
     {
       required: true,
       message: "请输入邮箱验证码",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" },
-  ],
+    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" }
+  ]
 };
 const changePasswordRules = {
   emailVerifyCode: [
     {
       required: true,
       message: "请输入邮箱验证码",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" },
+    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" }
   ],
   newPassword: [
     {
       required: true,
       message: "请输入新密码",
-      trigger: "blur",
-    },
+      trigger: "blur"
+    }
   ],
   repassword: [
     {
       required: true,
       message: "请确认新密码",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { validator: validateRePassword, trigger: "blur" },
-  ],
+    { validator: validateRePassword, trigger: "blur" }
+  ]
 };
 const bindRules = {
   server_code: [
     {
       required: true,
       message: "请输入服务器号",
-      trigger: "blur",
-    },
-  ],
+      trigger: "blur"
+    }
+  ]
 };
 const redeemRules = {
   redeem_code: [
     {
       required: true,
       message: "请输入兑换码",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { validator: validateRedeemCode, trigger: "blur" },
-  ],
+    { validator: validateRedeemCode, trigger: "blur" }
+  ]
 };
 const deleteAccountRules = {
   emailVerifyCode: [
     {
       required: true,
       message: "请输入邮箱验证码",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" },
-  ],
+    { min: 6, max: 6, message: "邮箱验证码有误", trigger: "blur" }
+  ]
 };
 const setSlotGameIdRules = {
   server_code: [
     {
       required: true,
       message: "请输入服务器号",
-      trigger: "blur",
-    },
-  ],
+      trigger: "blur"
+    }
+  ]
 };
 const extendSlotExpireTimeRules = {
   redeem_code: [
     {
       required: true,
       message: "请输入兑换码",
-      trigger: "blur",
+      trigger: "blur"
     },
-    { validator: validateRedeemCode, trigger: "blur" },
-  ],
+    { validator: validateRedeemCode, trigger: "blur" }
+  ]
 };
 
 let emailCodeLoadingFlag = ref(false);
@@ -1208,47 +1208,34 @@ let sendEmailCode = async (type: String) => {
     default:
       break;
   }
-  // 如果人机验证正在执行
-  if (captchaExecutingFlag.value) {
-    // 等待完成
-    let result = await new Promise((resolve) => {
-      let timer = setInterval(() => {
-        // 如果人机验证完成
-        if (!captchaExecutingFlag.value) {
-          clearInterval(timer);
-          resolve(true);
-        }
-        if (dynamicTurnstileVirtualRef.value === undefined){
-          clearInterval(timer);
-          resolve(false);
-        }
-      }, 1000);
-    });
-    if (!result) {
-      return;
-    }
-  }
+  // // 如果人机验证正在执行
+  // if (captchaExecutingFlag.value) {
+  //   // 等待完成
+  //   let result = await new Promise((resolve) => {
+  //     let timer = setInterval(() => {
+  //       // 如果人机验证完成
+  //       if (!captchaExecutingFlag.value) {
+  //         clearInterval(timer);
+  //         resolve(true);
+  //       }
+  //       if (dynamicTurnstileVirtualRef.value === undefined){
+  //         clearInterval(timer);
+  //         resolve(false);
+  //       }
+  //     }, 1000);
+  //   });
+  //   if (!result) {
+  //     return;
+  //   }
+  // }
   // 尝试获取验证码
-  let captchaToken = turnstile.getResponse();
-  if (!captchaToken) {
-    // 消息提示
-    ElNotification({
-      type: "warning",
-      title: "Warning",
-      message: "人机验证未通过",
-      duration: 3000,
-    });
-    // 重置人机验证
-    refreshCaptcha();
-    return;
-  }
   // 解绑动态虚拟ref
   dynamicTurnstileVirtualRef.value = undefined;
   // 根据类型组装请求参数
   let requestEmailVerifyCodeInfo = {
     email: "",
     action_type: 0,
-    captcha_token: captchaToken,
+    captcha_token: ""
   };
   switch (type) {
     case "emailBind":
@@ -1268,45 +1255,51 @@ let sendEmailCode = async (type: String) => {
       break;
   }
   // 发送验证码
-  try {
-    // 仓库发起邮箱验证码请求
-    let result = await userStore.userRequestEmailVerifyCode(
-      requestEmailVerifyCodeInfo
-    );
-    if (result.success) {
-      // 请求成功，清空表单
-      clearForm();
-      // 消息提示
-      ElNotification({
-        type: "success",
-        title: "Success",
-        message: result.message,
-        duration: 3000,
-      });
-      // 开始倒计时
-      codeTimes.value = 60;
-      let timer = setInterval(() => {
-        codeTimes.value--;
-        if (codeTimes.value < 1) {
-          clearInterval(timer);
+  requestWithCaptcha(
+    async (token: string) => {
+      requestEmailVerifyCodeInfo.captcha_token = token;
+      try {
+        // 仓库发起邮箱验证码请求
+        let result = await userStore.userRequestEmailVerifyCode(
+          requestEmailVerifyCodeInfo
+        );
+        if (result.success) {
+          // 请求成功，清空表单
+          clearForm();
+          // 消息提示
+          ElNotification({
+            type: "success",
+            title: "Success",
+            message: result.message,
+            duration: 3000
+          });
+          // 开始倒计时
+          codeTimes.value = 60;
+          let timer = setInterval(() => {
+            codeTimes.value--;
+            if (codeTimes.value < 1) {
+              clearInterval(timer);
+            }
+          }, 1000);
+        } else {
+          // 请求失败，消息提示
+          ElNotification({
+            type: "warning",
+            title: "Warning",
+            message: result.message,
+            duration: 3000
+          });
         }
-      }, 1000);
-    } else {
-      // 请求失败，消息提示
-      ElNotification({
-        type: "warning",
-        title: "Warning",
-        message: result.message,
-        duration: 3000,
-      });
+      } catch (error: any) {
+      } finally {
+        // 请求完成，关闭加载
+        emailCodeLoadingFlag.value = false;
+      }
+    },
+    () => {
+      emailCodeLoadingFlag.value = false;
     }
-  } catch (error: any) {
-    //console.log(error);
-  } finally {
-    // 请求完成，关闭加载
-    emailCodeLoadingFlag.value = false;
-    refreshCaptcha();
-  }
+  );
 };
 
 // 绑定邮箱
@@ -1314,7 +1307,7 @@ let emailbindform: EleFormRef = ref(null);
 let emailbindloadingflag = ref(false);
 let emailBindData = reactive({
   email: "",
-  emailVerifyCode: "",
+  emailVerifyCode: ""
 });
 let bindEmail = async () => {
   try {
@@ -1324,7 +1317,7 @@ let bindEmail = async () => {
     // 仓库发起绑定邮箱请求
     let result = await userStore.userEmailBind({
       email: emailBindData.email,
-      email_verify_code: emailBindData.emailVerifyCode,
+      email_verify_code: emailBindData.emailVerifyCode
     });
     if (result.success) {
       // 通知
@@ -1332,7 +1325,7 @@ let bindEmail = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       // 刷新信息
       getInfo();
@@ -1342,7 +1335,7 @@ let bindEmail = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error: any) {
@@ -1357,7 +1350,7 @@ let bindEmail = async () => {
 let emailunbindform: EleFormRef = ref(null);
 let emailunbindloadingflag = ref(false);
 let emailUnbindData = reactive({
-  emailVerifyCode: "",
+  emailVerifyCode: ""
 });
 let unbindEmail = async () => {
   try {
@@ -1366,7 +1359,7 @@ let unbindEmail = async () => {
     emailunbindloadingflag.value = true;
     // 仓库发起解绑邮箱请求
     let result = await userStore.userEmailUnbind({
-      email_verify_code: emailUnbindData.emailVerifyCode,
+      email_verify_code: emailUnbindData.emailVerifyCode
     });
     if (result.success) {
       // 通知
@@ -1374,7 +1367,7 @@ let unbindEmail = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       // 刷新信息
       getInfo();
@@ -1384,7 +1377,7 @@ let unbindEmail = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error: any) {
@@ -1405,7 +1398,7 @@ let changePassword = async () => {
     passwordloadingflag.value = true;
     let passwordInfo = {
       email_verify_code: "",
-      new_password: "",
+      new_password: ""
     };
     passwordInfo.email_verify_code = passwordData.emailVerifyCode;
     passwordInfo.new_password = passwordData.newPassword;
@@ -1419,7 +1412,7 @@ let changePassword = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     } else {
       // 请求失败，消息提示
@@ -1427,10 +1420,11 @@ let changePassword = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     // 请求完成，关闭加载
     passwordloadingflag.value = false;
   }
@@ -1447,7 +1441,7 @@ let addWebAuthn = async () => {
       type: "warning",
       title: "Warning",
       message: "当前浏览器不支持WebAuthn",
-      duration: 3000,
+      duration: 3000
     });
     return;
   }
@@ -1464,7 +1458,7 @@ let addWebAuthn = async () => {
         type: "success",
         title: "Success",
         message: registerResult.message,
-        duration: 3000,
+        duration: 3000
       });
       // 请求刷新列表
       getInfo();
@@ -1473,7 +1467,7 @@ let addWebAuthn = async () => {
         type: "warning",
         title: "Warning",
         message: registerResult.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error: any) {
@@ -1481,7 +1475,7 @@ let addWebAuthn = async () => {
       type: "warning",
       title: "Warning",
       message: error.message,
-      duration: 3000,
+      duration: 3000
     });
   } finally {
     // 请求完成，关闭加载
@@ -1495,14 +1489,14 @@ let removeWebAuthn = async (credentialID: number) => {
   try {
     // 仓库请求删除 WebAuthn
     let result = await webAuthnStore.removeById({
-      credential_id: credentialID,
+      credential_id: credentialID
     });
     if (result.success) {
       ElNotification({
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       // 请求刷新列表
       getInfo();
@@ -1511,7 +1505,7 @@ let removeWebAuthn = async (credentialID: number) => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error: any) {
@@ -1522,7 +1516,7 @@ let removeWebAuthn = async (credentialID: number) => {
 };
 
 // slot部分
-let slotLoading = ref(false)
+let slotLoading = ref(false);
 // 绑定表单部分
 let setSlotGameIdForm: EleFormRef = ref(null);
 // 弹窗
@@ -1530,16 +1524,14 @@ let setSlotGameIdDialogVisible = ref(false);
 // 表单数据
 let setSlotGameIdData = reactive({
   slotID: 0,
-  server_code: "",
+  server_code: ""
 });
 // 弹窗
-let setSlotGameIdDialog = async(slotID: number) => {
+let setSlotGameIdDialog = async (slotID: number) => {
   try {
     setSlotGameIdData.slotID = slotID;
     setSlotGameIdData.server_code = "";
-    setSlotGameIdForm.value!.clearValidate([
-      "server_code",
-    ]);
+    setSlotGameIdForm.value!.clearValidate(["server_code"]);
   } catch (error) {}
   setSlotGameIdDialogVisible.value = true;
 };
@@ -1552,7 +1544,7 @@ let setSlotGameId = async () => {
     // 仓库发起设置slot游戏ID请求
     let result = await slotStore.setSlotGameID({
       id: setSlotGameIdData.slotID,
-      server_code: setSlotGameIdData.server_code,
+      server_code: setSlotGameIdData.server_code
     });
     if (result.success) {
       // 通知
@@ -1560,7 +1552,7 @@ let setSlotGameId = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       // 刷新信息
       getInfo();
@@ -1570,7 +1562,7 @@ let setSlotGameId = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error: any) {
@@ -1587,16 +1579,14 @@ let extendSlotExpireTimeDialogVisible = ref(false);
 // 表单数据
 let extendSlotExpireTimeData = reactive({
   slotID: 0,
-  redeem_code: "",
+  redeem_code: ""
 });
 // 弹窗
-let popExtendSlotExpireTimeDialog = async(slotID: number) => {
+let popExtendSlotExpireTimeDialog = async (slotID: number) => {
   try {
     extendSlotExpireTimeData.slotID = slotID;
     extendSlotExpireTimeData.redeem_code = "";
-    extendSlotExpireTimeForm.value!.clearValidate([
-      "redeem_code",
-    ]);
+    extendSlotExpireTimeForm.value!.clearValidate(["redeem_code"]);
   } catch (error) {}
   extendSlotExpireTimeDialogVisible.value = true;
 };
@@ -1608,7 +1598,7 @@ let extendSlotExpireTime = async () => {
     // 仓库发起续费slot请求
     let result = await slotStore.extendSlotExpireTime({
       id: extendSlotExpireTimeData.slotID,
-      redeem_code: extendSlotExpireTimeData.redeem_code,
+      redeem_code: extendSlotExpireTimeData.redeem_code
     });
     if (result.success) {
       // 通知
@@ -1616,7 +1606,7 @@ let extendSlotExpireTime = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       // 刷新信息
       getInfo();
@@ -1626,10 +1616,11 @@ let extendSlotExpireTime = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
-  } catch (error: any) {} finally {
+  } catch (error: any) {
+  } finally {
     // 请求完成，关闭加载
     slotLoading.value = false;
     extendSlotExpireTimeDialogVisible.value = false;
@@ -1640,10 +1631,10 @@ let extendSlotExpireTime = async () => {
 let deleteSlotDialogVisible = ref(false);
 // 表单数据
 let deleteData = reactive({
-  slotID: 0,
+  slotID: 0
 });
 // 弹窗
-let popDeleteSlotDialog = async(slotID: number) => {
+let popDeleteSlotDialog = async (slotID: number) => {
   try {
     deleteData.slotID = slotID;
     deleteSlotDialogVisible.value = true;
@@ -1656,7 +1647,7 @@ let deleteSlot = async () => {
     slotLoading.value = true;
     // 仓库发起删除slot请求
     let result = await slotStore.deleteSlot({
-      id: deleteData.slotID,
+      id: deleteData.slotID
     });
     if (result.success) {
       // 通知
@@ -1664,7 +1655,7 @@ let deleteSlot = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
       // 刷新信息
       await getInfo();
@@ -1674,7 +1665,7 @@ let deleteSlot = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error: any) {
@@ -1701,7 +1692,7 @@ let bindLoading = ref(false);
 let bindform: EleFormRef = ref(null);
 // 表单数据
 let bindData = reactive({
-  server_code: "",
+  server_code: ""
 });
 // 清空表单
 let clearBindForm = () => {
@@ -1721,7 +1712,7 @@ onActivated(() => {
   clearBindForm();
 });
 // 弹窗
-let popBindDialog = async() => {
+let popBindDialog = async () => {
   try {
     await bindform.value!.validate();
     bindDialogVisible.value = true;
@@ -1737,7 +1728,7 @@ let gamdIDBind = async () => {
     bindLoading.value = true;
     bindDialogVisible.value = false;
     let bindInfo = {
-      server_code: "",
+      server_code: ""
     };
     bindInfo.server_code = bindData.server_code;
     // 仓库发起请求
@@ -1748,7 +1739,7 @@ let gamdIDBind = async () => {
         title: "Success",
         message: result.message,
         duration: 3000,
-        dangerouslyUseHTMLString: true,
+        dangerouslyUseHTMLString: true
       });
       // 刷新信息
       getInfo();
@@ -1759,7 +1750,7 @@ let gamdIDBind = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error) {
@@ -1776,7 +1767,7 @@ let codeLoading = ref(false);
 let codeform: EleFormRef = ref(null);
 // 表单数据
 let codeData = reactive({
-  redeem_code: "",
+  redeem_code: ""
 });
 // 清空表单
 let clearCodeForm = () => {
@@ -1802,7 +1793,7 @@ let codeUse = async () => {
     // 显示加载
     codeLoading.value = true;
     let codeInfo = {
-      redeem_code: "",
+      redeem_code: ""
     };
     codeInfo.redeem_code = codeData.redeem_code;
     // 仓库发起请求
@@ -1813,7 +1804,7 @@ let codeUse = async () => {
         title: "Success",
         message: result.message,
         duration: 3000,
-        dangerouslyUseHTMLString: true,
+        dangerouslyUseHTMLString: true
       });
       // 刷新信息
       getInfo();
@@ -1824,7 +1815,7 @@ let codeUse = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error) {
@@ -1838,7 +1829,7 @@ let codeUse = async () => {
 let deleteaccountform: EleFormRef = ref(null);
 let deleteaccountloadingflag = ref(false);
 let deleteAccountData = reactive({
-  emailVerifyCode: "",
+  emailVerifyCode: ""
 });
 let deleteAccount = async () => {
   try {
@@ -1847,7 +1838,7 @@ let deleteAccount = async () => {
     deleteaccountloadingflag.value = true;
     // 仓库发起解绑邮箱请求
     let result = await userStore.userDeleteAccount({
-      email_verify_code: deleteAccountData.emailVerifyCode,
+      email_verify_code: deleteAccountData.emailVerifyCode
     });
     if (result.success) {
       // 请求成功，登出
@@ -1857,7 +1848,7 @@ let deleteAccount = async () => {
         type: "success",
         title: "Success",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     } else {
       // 请求失败，消息提示
@@ -1865,7 +1856,7 @@ let deleteAccount = async () => {
         type: "warning",
         title: "Warning",
         message: result.message,
-        duration: 3000,
+        duration: 3000
       });
     }
   } catch (error: any) {
@@ -1878,18 +1869,8 @@ let deleteAccount = async () => {
 
 onUnmounted(() => {
   turnstile.remove();
-  window.onRobotBeforeInteractive = null;
-  window.onRobotAfterInteractive = null;
-  window.onRobotSuccess = null;
-  window.onRobotError = null;
 });
 onMounted(() => {
-  window.onRobotBeforeInteractive = onRobotBeforeInteractive;
-  window.onRobotAfterInteractive = onRobotAfterInteractive;
-  window.onRobotSuccess = onRobotSuccess;
-  window.onRobotError = onRobotError;
-  turnstile.remove();
-  turnstile.render(".cf-turnstile");
   getInfo();
   // 设置游戏名
   clientUsernameData.client_username = userStore.clientName;
