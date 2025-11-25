@@ -9,8 +9,6 @@ import "nprogress/nprogress.css";
 // 导入用户仓库
 import useUserStore from "@/store/modules/user";
 import pinia from "@/store/index";
-// 导入通知组件
-import { ElNotification } from "element-plus";
 
 NProgress.configure({
   easing: "ease", // 动画方式
@@ -39,22 +37,11 @@ let userStore = useUserStore(pinia);
 router.beforeEach(async (to, _, next) => {
   // 开启进度条
   NProgress.start();
-  // 判断是否已经登录，否则不给跳转
-  if (to.path != "/login" && userStore.token == "") {
-    userStore.clearUser();
-    ElNotification({
-      type: "warning",
-      title: "Warning",
-      message: "请先进行用户登录",
-      duration: 3000,
-    });
-    // 回到登录页
-    next({ path: "/login" });
-  } else if (to.path == "/login") {
-    // 如果前往的是登录页，直接跳转
+  // 如果前往的是登录页，直接跳转
+  if (to.path == "/login") {
     userStore.clearUser();
     next();
-  } else if (userStore.refreshFlag == true) {
+  } else if (userStore.refreshFlag) {
     // 已经获取到用户信息，直接跳转
     next();
   } else {
