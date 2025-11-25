@@ -10,26 +10,13 @@ import axiosRetry from "axios-retry";
 // 创建axios实例
 let request = axios.create({
   baseURL: `${import.meta.env.VITE_APP_BASE_URL}${import.meta.env.VITE_APP_BASE_API}`,
-  timeout: 10000
+  timeout: 10000,
+  withCredentials: true, // 跨域请求时发送cookie
 });
 
 // 为axios添加失败重试功能
 axiosRetry(request, { retries: 2, retryDelay: axiosRetry.exponentialDelay });
 
-//请求拦截器
-request.interceptors.request.use(
-  (config) => {
-    // 使用用户仓库的token
-    let userStore = useUserStore();
-    if (userStore.token) {
-      config.headers.Authorization = "Bearer " + userStore.token;
-    }
-    return config;
-  },
-  (err) => {
-    return Promise.reject(err);
-  }
-);
 //响应拦截器
 request.interceptors.response.use(
   (response) => {

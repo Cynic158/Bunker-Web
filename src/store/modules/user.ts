@@ -4,7 +4,6 @@ import { defineStore } from "pinia";
 // 用户请求api
 import {
   reqLogout,
-  reqNewToken,
   reqRegister,
   reqLogin,
   reqGetStatus,
@@ -35,8 +34,6 @@ import useWebAuthnStore from "./webauthn";
 // 创建仓库
 let useUserStore = defineStore("user", () => {
   // 用户信息部分
-  // 用户token，先从本地获取，没有就空字符串
-  let token = ref(localStorage.getItem("TOKEN") || "");
   // 用户名
   let uname = ref(localStorage.getItem("UNAME") || "");
   // 游戏id
@@ -63,17 +60,6 @@ let useUserStore = defineStore("user", () => {
   // 动态路由刷新flag
   let refreshFlag = ref(false);
 
-  // 获取会话token
-  let getToken = async () => {
-    let result = await reqNewToken();
-    if (result) {
-      token.value = result as any;
-      return "success";
-    } else {
-      return Promise.reject("fail");
-    }
-  };
-
   // 请求登录或者注册
   let userRegLog = async (userInfo: UserInfo, type: "login" | "reg") => {
     // 先对密码进行加密
@@ -86,7 +72,6 @@ let useUserStore = defineStore("user", () => {
         result = await reqRegister(userInfo);
       } else if (type == "login") {
         result = await reqLogin(userInfo);
-        localStorage.setItem("TOKEN", token.value);
       }
       return result;
     } catch (error) {
@@ -136,7 +121,6 @@ let useUserStore = defineStore("user", () => {
   };
   // 清空用户信息函数
   let clearUser = () => {
-    token.value = "";
     uname.value = "";
     clientName.value = "";
     uid.value = "";
@@ -148,7 +132,6 @@ let useUserStore = defineStore("user", () => {
     uapi.value = "";
     uhasEmail.value = false;
 
-    localStorage.setItem("TOKEN", token.value);
     localStorage.setItem("UNAME", uname.value);
     localStorage.setItem("CLIENTNAME", clientName.value);
     localStorage.setItem("UID", uid.value);
@@ -273,7 +256,6 @@ let useUserStore = defineStore("user", () => {
   };
 
   return {
-    token,
     uname,
     uid,
     clientName,
@@ -282,7 +264,6 @@ let useUserStore = defineStore("user", () => {
     menuRoutes,
     clearUser,
     refreshFlag,
-    getToken,
     userRegLog,
     upermission,
     adminFlag,

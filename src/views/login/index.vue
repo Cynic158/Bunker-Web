@@ -572,12 +572,6 @@ let requestEmailVerifyCode = async () => {
   requestWithCaptcha(
     async (token: string) => {
       try {
-        // 发起请求前获取token
-        let tokenResult = await reqNewTokenFunc();
-        if (!tokenResult.success) {
-          loadingflag.value = false;
-          return;
-        }
         // 发起请求
         let result = await userStore.userRequestEmailVerifyCode({
           username: forgetData.username,
@@ -632,12 +626,6 @@ let requestResetPassword = async () => {
   // 显示加载
   loadingflag.value = true;
   try {
-    // 发起请求前获取token
-    let tokenResult = await reqNewTokenFunc();
-    if (!tokenResult.success) {
-      loadingflag.value = false;
-      return;
-    }
     // 发起请求
     let result = await userStore.userResetPassword({
       username: forgetData.username,
@@ -688,12 +676,6 @@ let login = async () => {
     captcha_token: ""
   };
   try {
-    // 发起请求前获取token
-    let tokenResult = await reqNewTokenFunc();
-    if (!tokenResult.success) {
-      loadingflag.value = false;
-      return;
-    }
     // 仓库发起登录请求
     let result = await userStore.userRegLog(loginInfo, "login");
     if (result!.success) {
@@ -706,7 +688,7 @@ let login = async () => {
         message: result!.message,
         duration: 3000
       });
-      // 请求成功，进入首页，且无需解锁登录按钮
+      // 请求成功，进入首页
       $router.push("/");
       return;
     } else {
@@ -720,9 +702,10 @@ let login = async () => {
     }
   } catch (error: any) {
     //console.log(error);
+  } finally {
+    // 关闭加载
+    loadingflag.value = false;
   }
-  // 未请求成功，关闭加载
-  loadingflag.value = false;
 };
 
 // WebAuthn登录
@@ -739,12 +722,6 @@ let webauthnLogin = async () => {
   }
   loadingflag.value = true;
   try {
-    // 发起请求前获取token
-    let tokenResult = await reqNewTokenFunc();
-    if (!tokenResult.success) {
-      loadingflag.value = false;
-      return;
-    }
     // 仓库请求登录 WebAuthn Options
     let result = await webAuthnStore.loginOptions();
     // 向验证器发起挑战
@@ -799,11 +776,6 @@ let register = async () => {
         captcha_token: token
       };
       try {
-        // 发起请求前获取token
-        let tokenResult = await reqNewTokenFunc();
-        if (!tokenResult.success) {
-          return;
-        }
         // 仓库发起注册请求
         let result = await userStore.userRegLog(regInfo, "reg");
         if (result!.success) {
@@ -835,26 +807,6 @@ let register = async () => {
       loadingflag.value = false;
     }
   );
-};
-
-// 获取token
-let reqNewTokenFunc = async () => {
-  // 如果存在token则直接使用
-  if (!userStore.token) {
-    try {
-      await userStore.getToken();
-    } catch (error) {
-      // 请求失败，消息提示
-      ElNotification({
-        type: "warning",
-        title: "Warning",
-        message: "无法连接到服务器, 请检查网络连接",
-        duration: 3000
-      });
-      return Promise.reject(error);
-    }
-  }
-  return Promise.resolve({ success: true });
 };
 
 // 销毁全局变量

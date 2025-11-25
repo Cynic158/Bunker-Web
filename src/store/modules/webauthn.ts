@@ -1,7 +1,5 @@
 // WebAuthn 仓库
 import { defineStore } from "pinia";
-// 导入用户仓库
-import useUserStore from "@/store/modules/user";
 
 // WebAuthn 请求api
 import {
@@ -35,7 +33,6 @@ let useWebAuthnStore = defineStore("webauthn", () => {
   let loginVerification = async (data: AuthenticationResponseJSON) => {
     try {
       let result = await reqLoginVerification(data);
-      localStorage.setItem("TOKEN", useUserStore().token.valueOf());
       return result;
     } catch (error) {
       return Promise.reject(error);

@@ -3,7 +3,6 @@ import request from "@/utils/request";
 
 // 统一管理url
 enum API {
-  NEWTOKEN = "/new",
   REGISTER = "/user/register",
   LOGIN = "/user/login",
   GET_STATUS = "/user/get_status",
@@ -23,8 +22,6 @@ enum API {
 }
 
 // 导出api
-// 请求token
-export const reqNewToken = () => request.get(API.NEWTOKEN);
 // 请求注册
 export const reqRegister = (regInfo: UserInfo) =>
   request.post(API.REGISTER, regInfo);
