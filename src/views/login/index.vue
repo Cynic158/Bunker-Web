@@ -831,12 +831,14 @@ onMounted(() => {
     "repassword"
   ]);
 
-  let darkbg = localStorage.getItem("DARKMODE") === "true";
-  if (darkbg) {
-    const element = document.querySelector(".login-container");
-    if (element) {
-      (element as HTMLDivElement).style.backgroundImage =
-        `url("https://img.picgo.net/2024/01/24/bg_dark76c3ac9b1eee892b.webp")`;
+  const darkbg = localStorage.getItem("DARKMODE") === "true";
+  const element = document.querySelector(".login-container") as HTMLDivElement;
+
+  if (element) {
+    if (darkbg) {
+      element.classList.add("dark");
+    } else {
+      element.classList.remove("dark");
     }
   }
   document.documentElement.className = "light";
@@ -849,8 +851,7 @@ onMounted(() => {
 <style scoped lang="scss">
 @media only screen and (max-width: 768px), (hover: none) and (pointer: coarse) {
   .login-container {
-    // background-image: url("../../assets/images/bg_m.webp") !important;
-    background-image: url("https://img.picgo.net/2024/01/24/bg_m747b3a845541b9e0.webp") !important;
+    background-image: url("../../assets/images/bg_m.webp") !important;
   }
   .login-form {
     width: 94% !important;
@@ -885,8 +886,7 @@ onMounted(() => {
 .login-container {
   width: 100%;
   height: 100vh;
-  // background-image: url("../../assets/images/bg.webp");
-  background-image: url("https://img.picgo.net/2024/01/24/bge445a85cdac49114.webp");
+  background-image: url("../../assets/images/bg.webp");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -895,6 +895,9 @@ onMounted(() => {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  &.dark {
+    background-image: url("../../assets/images/bg_dark.webp");
+  }
   .login-form {
     width: 80%;
     min-width: 360px;
