@@ -164,7 +164,6 @@
                           : "获取验证码"
                     }}
                   </el-button>
-                  >
                 </template>
                 <div class="cf-turnstile"></div>
               </el-popover>

@@ -130,14 +130,6 @@ declare global {
     password: string;
     captcha_token: string;
   }
-  // 请求phoenixtoken
-  interface UserFbtokenInfo {
-    hashed_ip: string;
-  }
-  // 请求设置游戏名
-  interface UserSetClientUsernameInfo {
-    client_username: string;
-  }
   // 请求更改密码
   interface UserPasswordInfo {
     email_verify_code: string;

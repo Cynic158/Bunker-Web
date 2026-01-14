@@ -8,7 +8,6 @@ import {
   reqLogin,
   reqGetStatus,
   reqGetPhoenixToken,
-  reqSetResponseTo,
   reqChangePassword,
   reqUseRedeemCode,
   reqDisableApiKey,
@@ -26,7 +25,6 @@ import { ref } from "vue";
 import router from "@/router";
 // 导入加密
 import sha256 from "crypto-js/sha256";
-import md5 from "crypto-js/md5";
 import type { AxiosResponse } from "axios";
 import useSlotStore from "./slot";
 import useWebAuthnStore from "./webauthn";
@@ -38,8 +36,6 @@ let useUserStore = defineStore("user", () => {
   let uname = ref(localStorage.getItem("UNAME") || "");
   // 游戏id
   let uid = ref(localStorage.getItem("UID") || "");
-  // 游戏名
-  let clientName = ref(localStorage.getItem("CLIENTNAME") || "");
   // 无限制至
   let uunlimited = ref(localStorage.getItem("UUNLIMITEDFLAG") || "");
   // 权限
@@ -106,11 +102,9 @@ let useUserStore = defineStore("user", () => {
     uapi.value = userInfo.api_key;
     upermission.value = userInfo.permission.toString();
     uhasEmail.value = userInfo.has_email;
-    clientName.value = userInfo.client_username;
 
     localStorage.setItem("UNAME", userInfo.username);
     localStorage.setItem("UID", uid.value);
-    localStorage.setItem("CLIENTNAME", clientName.value);
     localStorage.setItem("UUNLIMITED", uunlimited.value);
     localStorage.setItem("UPERMISSION", upermission.value);
     localStorage.setItem("ADMINFLAG", adminFlag.value);
@@ -122,7 +116,6 @@ let useUserStore = defineStore("user", () => {
   // 清空用户信息函数
   let clearUser = () => {
     uname.value = "";
-    clientName.value = "";
     uid.value = "";
     upermission.value = "";
     adminFlag.value = "";
@@ -133,7 +126,6 @@ let useUserStore = defineStore("user", () => {
     uhasEmail.value = false;
 
     localStorage.setItem("UNAME", uname.value);
-    localStorage.setItem("CLIENTNAME", clientName.value);
     localStorage.setItem("UID", uid.value);
     localStorage.setItem("UUNLIMITED", uunlimited.value);
     localStorage.setItem("UPERMISSION", upermission.value);
@@ -194,17 +186,7 @@ let useUserStore = defineStore("user", () => {
   };
 
   // 请求phoenixtoken
-  let userReqFBToken = async (fbtokenInfo: UserFbtokenInfo) => {
-    // 发起请求
-    if (fbtokenInfo.hashed_ip !== "") {
-      fbtokenInfo.hashed_ip = md5(fbtokenInfo.hashed_ip).toString();
-    }
-    return reqGetPhoenixToken(fbtokenInfo);
-  };
-
-  // 请求phoenixtoken
-  let userSetClientUsername = async (info: UserSetClientUsernameInfo) =>
-    reqSetResponseTo(info);
+  let userReqFBToken = async () => reqGetPhoenixToken();
 
   // 请求绑定游戏ID
   let userGameIDBind = async (bindInfo: { server_code: string }) =>
@@ -258,7 +240,6 @@ let useUserStore = defineStore("user", () => {
   return {
     uname,
     uid,
-    clientName,
     userInfo,
     userLogout,
     menuRoutes,
@@ -273,7 +254,6 @@ let useUserStore = defineStore("user", () => {
     uapi,
     uhasEmail,
     userReqFBToken,
-    userSetClientUsername,
     userPassword,
     userGameIDBind,
     userCode,

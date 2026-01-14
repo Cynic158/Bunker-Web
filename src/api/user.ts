@@ -8,7 +8,6 @@ enum API {
   GET_STATUS = "/user/get_status",
   LOGOUT = "/user/logout",
   GET_PHOENIX_TOKEN = "/user/get_phoenix_token",
-  SET_RESPONSE_TO = "/user/set_response_to",
   CHANGE_PASSWORD = "/user/change_password",
   BIND_GAME_ID = "/user/bind_game_id",
   USE_REDEEM_CODE = "/user/redeem",
@@ -33,11 +32,8 @@ export const reqGetStatus = () => request.get(API.GET_STATUS);
 // 请求登出
 export const reqLogout = () => request.get(API.LOGOUT);
 // 请求phoenixtoken
-export const reqGetPhoenixToken = (fbtokenInfo: UserFbtokenInfo) =>
-  request.post(API.GET_PHOENIX_TOKEN, fbtokenInfo);
-// 请求设置游戏名
-export const reqSetResponseTo = (clientUsernameInfo: UserSetClientUsernameInfo) =>
-  request.post(API.SET_RESPONSE_TO, clientUsernameInfo);
+export const reqGetPhoenixToken = () =>
+  request.get(API.GET_PHOENIX_TOKEN);
 // 请求更改密码
 export const reqChangePassword = (passwordInfo: UserPasswordInfo) =>
   request.post(API.CHANGE_PASSWORD, passwordInfo);

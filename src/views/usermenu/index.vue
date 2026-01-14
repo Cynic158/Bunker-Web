@@ -267,68 +267,9 @@
           :type="'none'"
           style="margin-bottom: 24px"
         />
-        <el-form
-          @submit.prevent
-          class="limited-form-container"
-          :model="tokenData"
+        <el-button type="primary" native-type="submit" @click="tokenDownload"
+          >获取</el-button
         >
-          <el-form-item label="IP地址" prop="hashedIp">
-            <el-input
-              v-model="tokenData.hashedIp"
-              placeholder="请输入 IP 地址"
-            />
-          </el-form-item>
-          <el-form-item style="margin-bottom: 0">
-            <el-button
-              type="primary"
-              native-type="submit"
-              @click="tokenDownload"
-              >获取</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
-
-    <el-card
-      v-loading="clientUsernameLoading"
-      style="margin-top: 12px"
-      shadow="hover"
-    >
-      <template #header>
-        <div class="card-header">游戏名</div>
-      </template>
-      <div>
-        <div class="card-footer">
-          <el-icon>
-            <ChatDotRound />
-          </el-icon>
-          <span style="margin-left: 12px; color: dimgray"
-            >在此处设置程序的默认游戏名, 可以不设置</span
-          >
-        </div>
-        <el-divider border-style="dashed" />
-        <el-form
-          @submit.prevent
-          class="limited-form-container"
-          :model="clientUsernameData"
-        >
-          <el-form-item label="游戏名" prop="client_username">
-            <el-input
-              v-model="clientUsernameData.client_username"
-              placeholder="请输入游戏昵称, 可以为空"
-              maxlength="20"
-            />
-          </el-form-item>
-          <el-form-item style="margin-bottom: 0">
-            <el-button
-              type="primary"
-              native-type="submit"
-              @click="setClientUsername"
-              >设置</el-button
-            >
-          </el-form-item>
-        </el-form>
       </div>
     </el-card>
 
@@ -951,10 +892,6 @@ const userPermissionStr = computed(() => {
 });
 
 // token部分
-// 表单数据
-let tokenData = reactive({
-  hashedIp: ""
-});
 // Alert Title
 let tokenContent = ref("");
 // token获取loading
@@ -963,9 +900,7 @@ let tokenLoading = ref(false);
 let tokenDownload = async () => {
   tokenLoading.value = true;
   try {
-    let result = await userStore.userReqFBToken({
-      hashed_ip: tokenData.hashedIp
-    });
+    let result = await userStore.userReqFBToken();
     if (!result.message) {
       ElNotification({
         type: "success",
@@ -987,44 +922,6 @@ let tokenDownload = async () => {
     //console.log(error);
   } finally {
     tokenLoading.value = false;
-  }
-};
-
-// 设置游戏名部分
-// 表单数据
-let clientUsernameData = reactive({
-  client_username: ""
-});
-// 设置游戏名获取loading
-let clientUsernameLoading = ref(false);
-// 请求设置游戏名
-let setClientUsername = async () => {
-  clientUsernameLoading.value = true;
-  try {
-    let result = await userStore.userSetClientUsername({
-      client_username: clientUsernameData.client_username
-    });
-    if (result.success) {
-      ElNotification({
-        type: "success",
-        title: "Success",
-        message: result.message,
-        duration: 3000
-      });
-    } else {
-      ElNotification({
-        type: "warning",
-        title: "Warning",
-        message: result.message,
-        duration: 3000
-      });
-    }
-  } catch (error) {
-    //console.log(error);
-  } finally {
-    await getInfo();
-    clientUsernameData.client_username = userStore.clientName;
-    clientUsernameLoading.value = false;
   }
 };
 
@@ -1872,8 +1769,6 @@ onUnmounted(() => {
 });
 onMounted(() => {
   getInfo();
-  // 设置游戏名
-  clientUsernameData.client_username = userStore.clientName;
 });
 </script>
 
