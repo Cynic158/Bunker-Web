@@ -12,8 +12,10 @@ import {
   reqCreate,
   reqGetStatus,
   reqUnbind,
+  reqGetLoginSmscode,
   reqBindMobileAccount,
-  reqGetLoginSmscode
+  reqGetLoginQrcode,
+  reqBindQrcodeAccount
 } from "@/api/helper";
 
 import { ref } from "vue";
@@ -60,13 +62,20 @@ let useHelperStore = defineStore("helper", () => {
     return reqBindEmailAccount(emailInfo);
   };
 
+  // 获取验证码
+  let botPhoneCode = async (codeInfo: HelperCodeInfo) =>
+    reqGetLoginSmscode(codeInfo);
+
   // 手机创建
   let botCreateByPhone = async (phoneInfo: HelperPhoneInfo) =>
     reqBindMobileAccount(phoneInfo);
 
-  // 获取验证码
-  let botPhoneCode = async (codeInfo: HelperCodeInfo) =>
-    reqGetLoginSmscode(codeInfo);
+  // 获取二维码
+  let botGetQrcode = async () => reqGetLoginQrcode();
+
+  // 通过二维码绑定账号
+  let botBindQrcode = async (qrcodeInfo: HelperQrcodeInfo) =>
+    reqBindQrcodeAccount(qrcodeInfo);
 
   // 解绑
   let botUnbind = async () => reqUnbind();
@@ -84,8 +93,10 @@ let useHelperStore = defineStore("helper", () => {
     botCreateByEmail,
     botUnbind,
     botChangeName,
+    botPhoneCode,
     botCreateByPhone,
-    botPhoneCode
+    botGetQrcode,
+    botBindQrcode
   };
 });
 

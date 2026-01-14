@@ -109,7 +109,7 @@
             <ChatDotRound />
           </el-icon>
           <span style="margin-left: 12px; color: dimgray">
-            使用您提供的手机账号作为Bot (可自行更换皮肤)
+            使用您提供的手机账号作为Bot
           </span>
         </div>
         <el-divider border-style="dashed" />
@@ -194,7 +194,7 @@
             <ChatDotRound />
           </el-icon>
           <span style="margin-left: 12px; color: dimgray"
-            >使用您提供的邮箱账号作为Bot (可自行更换皮肤)</span
+            >使用您提供的邮箱账号作为Bot</span
           >
         </div>
         <el-divider border-style="dashed" />
@@ -242,6 +242,66 @@
             </div>
           </el-form-item>
         </el-form>
+      </div>
+    </el-card>
+
+    <el-card
+      shadow="hover"
+      v-if="!helperStore.set && isLoaded"
+      v-loading="createDefaultLoading || queryLoading"
+      style="margin-top: 12px"
+    >
+      <template #header>
+        <div class="card-header">扫码登录</div>
+      </template>
+      <div>
+        <div class="card-footer">
+          <el-icon>
+            <ChatDotRound />
+          </el-icon>
+          <span style="margin-left: 12px; color: dimgray"
+            >通过游戏扫码登录账号，支持渠道服登录</span
+          >
+        </div>
+        <el-divider border-style="dashed" />
+        <el-alert
+          v-if="qrcodeAlertTitle"
+          style="margin-bottom: 16px"
+          :title="qrcodeAlertTitle"
+          :type="qrcodeAlertType"
+          show-icon
+          :closable="false"
+        />
+        <div v-if="!qrcodeAlertTitle && qrcodeImg">
+          <el-image
+            style="width: 160px; height: 160px"
+            :src="'data:image/png;base64,' + qrcodeImg"
+          />
+          <el-divider border-style="dashed" />
+        </div>
+        <div style="display: inline-flex; align-items: center; flex-wrap: wrap">
+          <el-button
+            type="primary"
+            round
+            @click="requestLoginQRCode"
+            :loading="isLoadingQRCode"
+            >获取</el-button
+          >
+          <el-button
+            type="success"
+            round
+            @click="createBotByQRCode"
+            v-if="qrcodeImg"
+            >提交</el-button
+          >
+          <el-button
+            type="warning"
+            round
+            @click="verifyLink"
+            v-if="qrcodeVerify"
+            >验证</el-button
+          >
+        </div>
       </div>
     </el-card>
 
@@ -714,6 +774,90 @@ let createBotByPhone = async () => {
     }
   } catch (error: any) {
   } finally {
+    createDefaultLoading.value = false;
+    getBotStatus();
+  }
+};
+
+// 二维码登录
+const qrcodeAlertType = ref("warning");
+const qrcodeAlertTitle = ref("");
+
+const qrcodeUUID = ref<string>("");
+const qrcodeImg = ref<string>("");
+
+const isLoadingQRCode = ref(false);
+
+const qrcodeVerify = ref(false);
+
+const requestLoginQRCode = async () => {
+  qrcodeAlertTitle.value = "";
+  qrcodeVerify.value = false;
+
+  try {
+    isLoadingQRCode.value = true;
+    const result = await helperStore.botGetQrcode();
+
+    if (result.success) {
+      qrcodeUUID.value = result.data.uuid;
+      qrcodeImg.value = result.data.image_data;
+      ElNotification({
+        type: "success",
+        title: "Success",
+        message: "获取成功，请使用游戏扫码并确认后点击提交按钮",
+        duration: 3000
+      });
+    } else {
+      qrcodeAlertType.value = "warning";
+      qrcodeAlertTitle.value = result.message;
+
+      qrcodeUUID.value = "";
+      qrcodeImg.value = "";
+
+      if (result.data && result.data.verify_url) {
+        verify_url = result.data.verify_url;
+        ElNotification({
+          type: "warning",
+          title: "Warning",
+          message: "请按要求完成验证后再次点击刷新按钮",
+          duration: 3000
+        });
+        qrcodeVerify.value = true;
+      }
+    }
+  } catch (error: any) {
+  } finally {
+    isLoadingQRCode.value = false;
+  }
+};
+
+const createBotByQRCode = async () => {
+  try {
+    createDefaultLoading.value = true;
+
+    const result = await helperStore.botBindQrcode({
+      uuid: qrcodeUUID.value
+    });
+
+    qrcodeVerify.value = false;
+    qrcodeAlertTitle.value = result.message;
+
+    if (result.success) {
+      qrcodeAlertType.value = "success";
+      getBotStatus();
+    } else {
+      if (result.data && result.data.verify_url) {
+        qrcodeAlertType.value = "warning";
+        verify_url = result.data.verify_url;
+        qrcodeVerify.value = true;
+      } else {
+        qrcodeAlertType.value = "error";
+      }
+    }
+  } catch (error: any) {
+  } finally {
+    qrcodeUUID.value = "";
+    qrcodeImg.value = "";
     createDefaultLoading.value = false;
     getBotStatus();
   }

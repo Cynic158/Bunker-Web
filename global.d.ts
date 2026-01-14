@@ -87,15 +87,19 @@ declare global {
     password: string;
     password_level: number;
   }
+  // 请求验证码
+  interface HelperCodeInfo {
+    mobile: string;
+    captcha_token: string;
+  }
   // 请求手机创建bot
   interface HelperPhoneInfo {
     mobile: string;
     smscode: string;
   }
-  // 请求验证码
-  interface HelperCodeInfo {
-    mobile: string;
-    captcha_token: string;
+  // 请求二维码创建bot
+  interface HelperQrcodeInfo {
+    uuid: string;
   }
   // bot信息
   interface HelperRobotInfo {

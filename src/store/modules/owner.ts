@@ -10,10 +10,12 @@ import {
   reqBindEmailAccount,
   reqGetStatus,
   reqUnbind,
-  reqBindMobileAccount,
   reqGetLoginSmscode,
+  reqBindMobileAccount,
   reqGetMailReward,
-  reqUseGiftCode
+  reqUseGiftCode,
+  reqGetLoginQrcode,
+  reqBindQrcodeAccount
 } from "@/api/owner";
 
 import { ref } from "vue";
@@ -52,13 +54,20 @@ let useOwnerStore = defineStore("owner", () => {
     return reqBindEmailAccount(emailInfo);
   };
 
+  // 获取验证码
+  let botPhoneCode = async (codeInfo: HelperCodeInfo) =>
+    reqGetLoginSmscode(codeInfo);
+
   // 手机创建
   let botCreateByPhone = async (phoneInfo: HelperPhoneInfo) =>
     reqBindMobileAccount(phoneInfo);
 
-  // 获取验证码
-  let botPhoneCode = async (codeInfo: HelperCodeInfo) =>
-    reqGetLoginSmscode(codeInfo);
+  // 获取二维码
+  let botGetQrcode = async () => reqGetLoginQrcode();
+
+  // 通过二维码绑定账号
+  let botBindQrcode = async (qrcodeInfo: HelperQrcodeInfo) =>
+    reqBindQrcodeAccount(qrcodeInfo);
 
   // 解绑
   let botUnbind = async () => reqUnbind();
@@ -76,8 +85,10 @@ let useOwnerStore = defineStore("owner", () => {
     getBot,
     botCreateByEmail,
     botUnbind,
-    botCreateByPhone,
     botPhoneCode,
+    botCreateByPhone,
+    botGetQrcode,
+    botBindQrcode,
     botGetMailReward,
     botUseGiftCode
   };
