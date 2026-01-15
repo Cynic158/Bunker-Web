@@ -42,22 +42,6 @@ declare global {
     username: string;
     permission: number;
   }
-  // 请求更新有效期
-  interface AdminExtendUserExpireTimeInfo {
-    username: string;
-    seconds: number;
-  }
-  // 请求更新无限有效期
-  interface AdminExtendUserUnlimitedTimeInfo {
-    username: string;
-    seconds: number;
-  }
-  // 请求兑换码
-  interface AdminCodeInfo {
-    type: number;
-    count: number;
-    note?: string;
-  }
 
   // notice相关
   // 请求公告
@@ -165,33 +149,21 @@ declare global {
   interface UserRemoveAccountInfo {
     email_verify_code: string;
   }
-  // Slot 信息
-  interface Slot{
-    id: number;
-    game_id: number;
-    expire_at: number;
-    note: string;
-  }
   // 用户信息
   interface UserDetail {
     username: string;
     game_id: number;
-    unlimited_until: number;
     permission: number;
     is_admin: boolean;
     create_at: number;
-    expire_at: number;
     api_key: string;
     has_email: boolean;
     client_username: string;
-    slots: Array<Slot>;
     credentials: Array<WebCredential>;
   }
   interface UserQueryDetail {
     username: string;
     permission: number;
-    expire_at: number;
-    unlimited_until: number;
     game_id: number;
     create_at: number;
     ban_until: number;
@@ -206,19 +178,6 @@ declare global {
     id: number;
     create_at: number;
     raw_id: string;
-  }
-
-  // slot相关
-  interface DeleteSlotInfo{
-    id: number;
-  }
-  interface SetSlotGameIdInfo{
-    id: number;
-    server_code: string;
-  }
-  interface ExtendSlotExpireTime{
-    id: number;
-    redeem_code: string;
   }
 
   // 无限制服务器相关

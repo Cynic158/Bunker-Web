@@ -7,9 +7,6 @@ enum API {
   BAN_USER = "/admin/user/ban",
   UNBAN_USER = "/admin/user/unban",
   SET_USER_PERMISSION = "/admin/user/set_permission",
-  EXTEND_USER_EXPIRE_TIME = "/admin/user/extend_expire_time",
-  EXTEND_USER_UNLIMITED_TIME = "/admin/user/extend_unlimited_time",
-  GENERATE_REDEEM_CODE = "/admin/redeem_code/generate",
   GET_UNLIMITED_RENTAL_SERVER_LIST = "/admin/unlimited_server/get_list",
   ADD_UNLIMITED_RENTAL_SERVER = "/admin/unlimited_server/add",
   DELETE_UNLIMITED_RENTAL_SERVER = "/admin/unlimited_server/delete",
@@ -28,17 +25,6 @@ export const reqUnBanUser = (username: { username: string }) =>
 // 请求使用管理权限设置一位用户的权限
 export const reqSetUserPermission = (permissionInfo: AdminPermissionInfo) =>
   request.post(API.SET_USER_PERMISSION, permissionInfo);
-// 请求使用管理权限更新一位用户的有效期
-export const reqExtendUserExpireTime = (
-  extendUserExpireTimeInfo: AdminExtendUserExpireTimeInfo
-) => request.post(API.EXTEND_USER_EXPIRE_TIME, extendUserExpireTimeInfo);
-// 请求使用管理权限更新一位用户的无限制权限有效期
-export const reqExtendUserUnlimitedTime = (
-  extendUserUnlimitedTimeInfo: AdminExtendUserUnlimitedTimeInfo
-) => request.post(API.EXTEND_USER_UNLIMITED_TIME, extendUserUnlimitedTimeInfo);
-// 请求生成兑换码
-export const reqGenerateRedeemCode = (codeInfo: AdminCodeInfo) =>
-  request.post(API.GENERATE_REDEEM_CODE, codeInfo);
 // 请求获取无限制服务器列表
 export const reqGetUnlimitedRentalServerList = () =>
   request.get(API.GET_UNLIMITED_RENTAL_SERVER_LIST);

@@ -9,10 +9,10 @@ import {
   reqGetStatus,
   reqGetPhoenixToken,
   reqChangePassword,
-  reqUseRedeemCode,
   reqDisableApiKey,
   reqGenApiKey,
   reqBindGameId,
+  reqUnbindGameId,
   reqRequestEmailVerifyCode,
   reqResetPassword,
   reqEmailBind,
@@ -26,7 +26,6 @@ import router from "@/router";
 // 导入加密
 import sha256 from "crypto-js/sha256";
 import type { AxiosResponse } from "axios";
-import useSlotStore from "./slot";
 import useWebAuthnStore from "./webauthn";
 
 // 创建仓库
@@ -36,16 +35,12 @@ let useUserStore = defineStore("user", () => {
   let uname = ref(localStorage.getItem("UNAME") || "");
   // 游戏id
   let uid = ref(localStorage.getItem("UID") || "");
-  // 无限制至
-  let uunlimited = ref(localStorage.getItem("UUNLIMITEDFLAG") || "");
   // 权限
   let upermission = ref(localStorage.getItem("UPERMISSION") || "");
   // 是否管理员
   let adminFlag = ref(localStorage.getItem("ADMINFLAG") || "");
   // 用户创建时间
   let ucreate = ref(localStorage.getItem("UCREATE") || "");
-  // 用户过期时间
-  let uexpire = ref(localStorage.getItem("UEXPIRE") || "");
   // API
   let uapi = ref(localStorage.getItem("UAPI") || "");
   // 是否有邮箱
@@ -92,24 +87,20 @@ let useUserStore = defineStore("user", () => {
       adminFlag.value = "否";
     }
     if (userInfo.game_id == 0) {
-      uid.value = "暂未获取";
+      uid.value = "未绑定";
     } else {
       uid.value = userInfo.game_id.toString();
     }
-    uunlimited.value = userInfo.unlimited_until.toString();
     ucreate.value = userInfo.create_at.toString();
-    uexpire.value = userInfo.expire_at.toString();
     uapi.value = userInfo.api_key;
     upermission.value = userInfo.permission.toString();
     uhasEmail.value = userInfo.has_email;
 
     localStorage.setItem("UNAME", userInfo.username);
     localStorage.setItem("UID", uid.value);
-    localStorage.setItem("UUNLIMITED", uunlimited.value);
     localStorage.setItem("UPERMISSION", upermission.value);
     localStorage.setItem("ADMINFLAG", adminFlag.value);
     localStorage.setItem("UCREATE", ucreate.value);
-    localStorage.setItem("UEXPIRE", uexpire.value);
     localStorage.setItem("UAPI", uapi.value);
     localStorage.setItem("HAS_EMAIL", uhasEmail.value.toString());
   };
@@ -119,19 +110,15 @@ let useUserStore = defineStore("user", () => {
     uid.value = "";
     upermission.value = "";
     adminFlag.value = "";
-    uunlimited.value = "";
     ucreate.value = "";
-    uexpire.value = "";
     uapi.value = "";
     uhasEmail.value = false;
 
     localStorage.setItem("UNAME", uname.value);
     localStorage.setItem("UID", uid.value);
-    localStorage.setItem("UUNLIMITED", uunlimited.value);
     localStorage.setItem("UPERMISSION", upermission.value);
     localStorage.setItem("ADMINFLAG", adminFlag.value);
     localStorage.setItem("UCREATE", ucreate.value);
-    localStorage.setItem("UEXPIRE", uexpire.value);
     localStorage.setItem("UAPI", uapi.value);
     localStorage.setItem("HAS_EMAIL", "");
 
@@ -146,8 +133,6 @@ let useUserStore = defineStore("user", () => {
     if (result.success && result.data) {
       // 获取成功，存储用户信息
       setUser(result.data);
-      const slotStore = useSlotStore();
-      slotStore.slotData = result.data.slots;
       const webauthnStore = useWebAuthnStore();
       webauthnStore.credentialsData = result.data.credentials;
       // 恢复默认路由
@@ -189,12 +174,10 @@ let useUserStore = defineStore("user", () => {
   let userReqFBToken = async () => reqGetPhoenixToken();
 
   // 请求绑定游戏ID
-  let userGameIDBind = async (bindInfo: { server_code: string }) =>
-    reqBindGameId(bindInfo);
+  let userGameIDBind = async () => reqBindGameId();
 
-  // 请求使用兑换码
-  let userCode = async (code: { redeem_code: string }) =>
-    reqUseRedeemCode(code);
+  // 请求解绑游戏ID
+  let userGameIDUnbind = async () => reqUnbindGameId();
 
   // 请求生成api
   let userGenApi = async () => reqGenApiKey();
@@ -248,15 +231,13 @@ let useUserStore = defineStore("user", () => {
     userRegLog,
     upermission,
     adminFlag,
-    uunlimited,
     ucreate,
-    uexpire,
     uapi,
     uhasEmail,
     userReqFBToken,
     userPassword,
     userGameIDBind,
-    userCode,
+    userGameIDUnbind,
     userGenApi,
     userDisApi,
     userRequestEmailVerifyCode,

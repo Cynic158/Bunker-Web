@@ -10,14 +10,14 @@ enum API {
   GET_PHOENIX_TOKEN = "/user/get_phoenix_token",
   CHANGE_PASSWORD = "/user/change_password",
   BIND_GAME_ID = "/user/bind_game_id",
-  USE_REDEEM_CODE = "/user/redeem",
+  UNBIND_GAME_ID = "/user/unbind_game_id",
   GEN_API_KEY = "/user/api_key/generate",
   DISABLE_API_KEY = "/user/api_key/disable",
   REQUEST_EMAIL_VERIFY_CODE = "/user/email/send_code",
   RESET_PASSWORD = "/user/reset_password",
   EMAIL_BIND = "/user/email/bind",
   EMAIL_UNBIND = "/user/email/unbind",
-  REMOVE_ACCOUNT = "/user/remove_account",
+  REMOVE_ACCOUNT = "/user/remove_account"
 }
 
 // 导出api
@@ -32,17 +32,14 @@ export const reqGetStatus = () => request.get(API.GET_STATUS);
 // 请求登出
 export const reqLogout = () => request.get(API.LOGOUT);
 // 请求phoenixtoken
-export const reqGetPhoenixToken = () =>
-  request.get(API.GET_PHOENIX_TOKEN);
+export const reqGetPhoenixToken = () => request.get(API.GET_PHOENIX_TOKEN);
 // 请求更改密码
 export const reqChangePassword = (passwordInfo: UserPasswordInfo) =>
   request.post(API.CHANGE_PASSWORD, passwordInfo);
 // 请求绑定游戏ID
-export const reqBindGameId = (bindInfo: { server_code: string }) =>
-  request.post(API.BIND_GAME_ID, bindInfo);
-// 请求使用兑换码
-export const reqUseRedeemCode = (code: { redeem_code: string }) =>
-  request.post(API.USE_REDEEM_CODE, code);
+export const reqBindGameId = () => request.get(API.BIND_GAME_ID);
+// 请求解绑游戏ID
+export const reqUnbindGameId = () => request.get(API.UNBIND_GAME_ID);
 // 请求生成api
 export const reqGenApiKey = () => request.get(API.GEN_API_KEY);
 // 禁用生成api

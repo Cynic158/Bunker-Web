@@ -7,9 +7,6 @@ import {
   reqBanUser,
   reqUnBanUser,
   reqSetUserPermission,
-  reqExtendUserExpireTime,
-  reqExtendUserUnlimitedTime,
-  reqGenerateRedeemCode,
   reqGetUnlimitedRentalServerList,
   reqAddUnlimitedRentalServer,
   reqDeleteUnlimitedRentalServer
@@ -32,20 +29,6 @@ let useAdminStore = defineStore("admin", () => {
   let userSetPermission = async (permissionInfo: AdminPermissionInfo) =>
     reqSetUserPermission(permissionInfo);
 
-  // 更新用户有效期
-  let userExtendExpireTime = async (
-    extendUserExpireTimeInfo: AdminExtendUserExpireTimeInfo
-  ) => reqExtendUserExpireTime(extendUserExpireTimeInfo);
-
-  // 更新用户无限制权限有效期
-  let userExtendUnlimitedTime = async (
-    extendUserUnlimitedTimeInfo: AdminExtendUserUnlimitedTimeInfo
-  ) => reqExtendUserUnlimitedTime(extendUserUnlimitedTimeInfo);
-
-  // 生成兑换码
-  let genCode = async (codeInfo: AdminCodeInfo) =>
-    reqGenerateRedeemCode(codeInfo);
-
   // 查询无限制服务器列表
   let getUnlimitedRentalServerList = async () =>
     reqGetUnlimitedRentalServerList();
@@ -64,9 +47,6 @@ let useAdminStore = defineStore("admin", () => {
     userBan,
     userUnBan,
     userSetPermission,
-    userExtendExpireTime,
-    userExtendUnlimitedTime,
-    genCode,
     getUnlimitedRentalServerList,
     addUnlimitedRentalServer,
     deleteUnlimitedRentalServer

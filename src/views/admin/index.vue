@@ -1,120 +1,6 @@
 <template>
   <div>
-    <el-card
-      shadow="hover"
-      v-loading="generateRedeemCodeLoading"
-      style="margin-top: 12px"
-    >
-      <template #header>
-        <div class="card-header">生成兑换码</div>
-      </template>
-      <div>
-        <div class="card-footer">
-          <el-icon>
-            <ChatDotRound />
-          </el-icon>
-          <span style="margin-left: 12px; color: dimgray"
-            >使用管理权限生成兑换码</span
-          >
-        </div>
-        <el-divider border-style="dashed"/>
-
-        <el-form
-          @submit.prevent
-          class="form-container"
-          :model="generateRedeemCodeData"
-          :rules="generateRedeemCodeFormRule"
-          ref="codeform"
-        >
-          <el-form-item label="类型" prop="type">
-            <el-select
-              v-model="generateRedeemCodeData.type"
-              class="m-2"
-              placeholder="一个月账户有效期(1)"
-            >
-              <el-option label="一个月账户有效期(1)" value="1" />
-              <el-option label="三个月账户有效期(2)" value="2" />
-              <el-option label="一个月 slot 有效期(3)" value="3" />
-              <el-option label="三个月 slot 有效期(4)" value="4" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="数量" prop="count">
-            <el-input
-              type="number"
-              v-model="generateRedeemCodeData.count"
-              placeholder="请输入生成数量"
-            />
-          </el-form-item>
-          <el-form-item label="备注" prop="note">
-            <el-input
-              v-model="generateRedeemCodeData.note"
-              placeholder="请输入备注"
-            />
-          </el-form-item>
-
-          <el-form-item style="margin-bottom: 0">
-            <el-button type="primary" native-type="submit" @click="generateCode"
-              >生成</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
-
-    <el-card
-      shadow="hover"
-      v-loading="unlimitedServerLoading"
-      style="margin-top: 12px"
-    >
-      <template #header>
-        <div class="card-header">无限制服务器</div>
-      </template>
-      <div>
-        <div class="card-footer">
-          <el-icon>
-            <ChatDotRound />
-          </el-icon>
-          <span style="margin-left: 12px; color: dimgray"
-            >所有有效用户可无限制地登录到这些服务器</span
-          >
-        </div>
-        <el-divider border-style="dashed"/>
-        <el-table
-          :data="unlimitedServerList"
-          class="form-container"
-          max-height="250"
-        >
-          <el-table-column prop="id" label="ID" width="60" />
-          <el-table-column prop="server_code" label="服务器号" width="120" />
-          <el-table-column prop="create_at" label="创建时间" min-width="200" >
-            <template  #default="scope">
-              {{ getTimeStr2(scope.row.create_at) }}
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" label="操作" width="60">
-            <template #default="scope">
-              <el-button
-                link
-                type="danger"
-                size="small"
-                @click.prevent="deleteUnlimitedServer(scope?.row?.id)"
-              >
-                删除
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-button
-          style="width: 100%; margin-top: 10px"
-          class="form-container"
-          @click.prevent="popAddUnlimitedServerDialog"
-        >
-          添加
-        </el-button>
-      </div>
-    </el-card>
-
-    <el-card
+        <el-card
       shadow="hover"
       v-loading="queryUserLoading"
       style="margin-top: 12px"
@@ -198,28 +84,6 @@
                 </template>
                 {{ queryUserInfo.create_at }}
               </el-descriptions-item>
-              <el-descriptions-item>
-                <template #label>
-                  <div class="userinfo-cell-item">
-                    <el-icon class="userinfo-cell-item-icon">
-                      <SwitchButton />
-                    </el-icon>
-                    有效期至
-                  </div>
-                </template>
-                {{ queryUserInfo.expire_at }}
-              </el-descriptions-item>
-              <el-descriptions-item>
-                <template #label>
-                  <div class="userinfo-cell-item">
-                    <el-icon class="userinfo-cell-item-icon">
-                      <Promotion />
-                    </el-icon>
-                    无限制至
-                  </div>
-                </template>
-                {{ queryUserInfo.unlimited_until }}
-              </el-descriptions-item>
               <el-descriptions-item v-if="queryUserInfo.ban_until">
                 <template #label>
                   <div class="userinfo-cell-item">
@@ -254,6 +118,113 @@
               v-if="queryUserInfo.ban_until"
               >解封
             </el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-card>
+
+    <el-card
+      shadow="hover"
+      v-loading="unlimitedServerLoading"
+      style="margin-top: 12px"
+    >
+      <template #header>
+        <div class="card-header">无限制服务器</div>
+      </template>
+      <div>
+        <div class="card-footer">
+          <el-icon>
+            <ChatDotRound />
+          </el-icon>
+          <span style="margin-left: 12px; color: dimgray"
+            >所有有效用户可无限制地登录到这些服务器</span
+          >
+        </div>
+        <el-divider border-style="dashed"/>
+        <el-table
+          :data="unlimitedServerList"
+          class="form-container"
+          max-height="250"
+        >
+          <el-table-column prop="id" label="ID" width="60" />
+          <el-table-column prop="server_code" label="服务器号" width="120" />
+          <el-table-column prop="create_at" label="创建时间" min-width="200" >
+            <template  #default="scope">
+              {{ getTimeStr2(scope.row.create_at) }}
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="60">
+            <template #default="scope">
+              <el-button
+                link
+                type="danger"
+                size="small"
+                @click.prevent="deleteUnlimitedServer(scope?.row?.id)"
+              >
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button
+          style="width: 100%; margin-top: 10px"
+          class="form-container"
+          @click.prevent="popAddUnlimitedServerDialog"
+        >
+          添加
+        </el-button>
+      </div>
+    </el-card>
+
+        <el-card
+      shadow="hover"
+      v-loading="setUserPermissionLoading"
+      style="margin-top: 12px"
+    >
+      <template #header>
+        <div class="card-header">设置用户权限</div>
+      </template>
+      <div>
+        <div class="card-footer">
+          <el-icon>
+            <ChatDotRound />
+          </el-icon>
+          <span style="margin-left: 12px; color: dimgray"
+            >通过用户名设置用户权限</span
+          >
+        </div>
+        <el-divider border-style="dashed"/>
+
+        <el-form
+          @submit.prevent
+          class="form-container"
+          :model="setUserPermissionData"
+          :rules="setUserPermissionRule"
+          ref="setUserPermissionForm"
+        >
+          <el-form-item label="用户名称" prop="username">
+            <el-input
+              v-model="setUserPermissionData.username"
+              placeholder="请输入用户名"
+            />
+          </el-form-item>
+          <el-form-item label="用户权限" prop="permission">
+            <el-select
+              v-model="setUserPermissionData.permission"
+              class="m-2"
+              placeholder="普通用户(0)"
+            >
+              <el-option label="普通用户(0)" value="0" />
+              <el-option label="开发者(1)" value="1" />
+            </el-select>
+          </el-form-item>
+          <el-form-item style="margin-bottom: 0">
+            <el-button
+              type="danger"
+              native-type="submit"
+              @click="setUserPermission"
+              >提交</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -298,167 +269,6 @@
           </el-form-item>
           <el-form-item style="margin-bottom: 0">
             <el-button type="danger" native-type="submit" @click="banUser"
-              >提交</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
-
-    <el-card
-      shadow="hover"
-      v-loading="setUserPermissionLoading"
-      style="margin-top: 12px"
-    >
-      <template #header>
-        <div class="card-header">设置用户权限</div>
-      </template>
-      <div>
-        <div class="card-footer">
-          <el-icon>
-            <ChatDotRound />
-          </el-icon>
-          <span style="margin-left: 12px; color: dimgray"
-            >通过用户名设置用户权限</span
-          >
-        </div>
-        <el-divider border-style="dashed"/>
-
-        <el-form
-          @submit.prevent
-          class="form-container"
-          :model="setUserPermissionData"
-          :rules="setUserPermissionRule"
-          ref="setUserPermissionForm"
-        >
-          <el-form-item label="用户名称" prop="username">
-            <el-input
-              v-model="setUserPermissionData.username"
-              placeholder="请输入用户名"
-            />
-          </el-form-item>
-          <el-form-item label="用户权限" prop="permission">
-            <el-select
-              v-model="setUserPermissionData.permission"
-              class="m-2"
-              placeholder="游客(0)"
-            >
-              <el-option label="游客(0)" value="0" />
-              <el-option label="激活用户(1)" value="1" />
-            </el-select>
-          </el-form-item>
-          <el-form-item style="margin-bottom: 0">
-            <el-button
-              type="danger"
-              native-type="submit"
-              @click="setUserPermission"
-              >提交</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
-
-    <el-card
-      shadow="hover"
-      v-loading="extendUserExipreLoading"
-      style="margin-top: 12px"
-    >
-      <template #header>
-        <div class="card-header">设置用户有效期</div>
-      </template>
-      <div>
-        <div class="card-footer">
-          <el-icon>
-            <ChatDotRound />
-          </el-icon>
-          <span style="margin-left: 12px; color: dimgray"
-            >延长或缩短用户的有效期</span
-          >
-        </div>
-        <el-divider border-style="dashed"/>
-
-        <el-form
-          @submit.prevent
-          class="form-container"
-          :model="extendUserExipreData"
-          :rules="extendRule"
-          ref="extendUserExipreForm"
-        >
-          <el-form-item label="用户名称" prop="username">
-            <el-input
-              v-model="extendUserExipreData.username"
-              placeholder="请输入用户名"
-            />
-          </el-form-item>
-          <el-form-item label="设置时长" prop="hours">
-            <el-input
-              v-model="extendUserExipreData.hours"
-              type="number"
-              placeholder="请输入时长(小时)"
-              min="-86400"
-              max="86400"
-            />
-            <span>{{ extendUserExipreTimeStr }}</span>
-          </el-form-item>
-          <el-form-item style="margin-bottom: 0">
-            <el-button
-              type="danger"
-              native-type="submit"
-              @click="extendUserExipre"
-              >提交</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
-
-    <el-card
-      shadow="hover"
-      v-loading="extendUserUnlimitedLoading"
-      style="margin-top: 12px"
-    >
-      <template #header>
-        <div class="card-header">设置用户无限制权限有效期</div>
-      </template>
-      <div>
-        <div class="card-footer">
-          <el-icon>
-            <ChatDotRound />
-          </el-icon>
-          <span style="margin-left: 12px; color: dimgray"
-            >延长或缩短用户的无限制权限 (开发者/商用许可) 有效期</span
-          >
-        </div>
-        <el-divider border-style="dashed"/>
-        <el-form
-          @submit.prevent
-          class="form-container"
-          :model="extendUserUnlimitedData"
-          :rules="extendRule"
-          ref="extendUserUnlimitedForm"
-        >
-          <el-form-item label="用户名称" prop="username">
-            <el-input
-              v-model="extendUserUnlimitedData.username"
-              placeholder="请输入用户名"
-            />
-          </el-form-item>
-          <el-form-item label="设置时长" prop="hours">
-            <el-input
-              v-model="extendUserUnlimitedData.hours"
-              type="number"
-              placeholder="请输入时长(小时)"
-              min="-86400"
-              max="86400"
-            />
-            <span>{{ extendUserUnlimitedTimeStr }}</span>
-          </el-form-item>
-          <el-form-item style="margin-bottom: 0">
-            <el-button
-              type="danger"
-              native-type="submit"
-              @click="extendUserUnlimited"
               >提交</el-button
             >
           </el-form-item>
@@ -543,16 +353,6 @@ let validateUserName = (_: any, value: any, callback: any) => {
     callback();
   }
 };
-let validateRedeemCodeCount = (_: any, value: any, callback: any) => {
-  const intValue = parseInt(value, 10);
-  if (isNaN(intValue) || intValue <= 0 || intValue !== parseFloat(value)) {
-    callback(new Error("请输入正整数"));
-  } else if (intValue > 999) {
-    callback(new Error("超出最大生成数量"));
-  } else {
-    callback();
-  }
-};
 let validateValidNumber = (_: any, value: any, callback: any) => {
   const intValue = parseInt(value, 10);
   if (intValue < -86400 || intValue > 86400) {
@@ -563,21 +363,6 @@ let validateValidNumber = (_: any, value: any, callback: any) => {
 };
 
 // 表单校验规则
-// 生成兑换码
-const generateRedeemCodeFormRule = {
-  type: [
-    {
-      required: true,
-      message: "请选择兑换码类型",
-      trigger: "blur",
-    },
-  ],
-  count: [
-    { required: true, message: "请输入生成数量", trigger: "blur" },
-    { validator: validateRedeemCodeCount, trigger: "blur" },
-  ],
-  note: [{ required: true, message: "请输入备注", trigger: "blur" }],
-};
 // 添加无限制服务器
 const addUnlimitedServerRule = {
   server_code: [
@@ -622,81 +407,6 @@ const setUserPermissionRule = {
     { required: true, message: "请选择用户权限", trigger: "blur" },
     { min: 0, max: 1, message: "用户权限不在可设置范围内", trigger: "blur" },
   ],
-};
-// 续期用户
-const extendRule = {
-  username: [
-    { required: true, message: "请输入用户名", trigger: "blur" },
-    { min: 5, max: 12, message: "用户名长度为5到12位", trigger: "blur" },
-    { validator: validateUserName, trigger: "blur" },
-  ],
-  hours: [
-    { required: true, message: "请输入时长", trigger: "blur" },
-    { validator: validateValidNumber, trigger: "blur" },
-  ],
-};
-
-// 生成兑换码
-// 表单元素
-let codeform: EleFormRef = ref(null);
-// 新建信息表单
-let generateRedeemCodeData = reactive({
-  type: "1",
-  count: "",
-  note: "",
-});
-// 清空表单
-let clearGenerateRedeemCodeForm = () => {
-  generateRedeemCodeData.type = "1";
-  generateRedeemCodeData.count = "";
-  generateRedeemCodeData.note = "";
-  // 清空校验提示
-  try {
-    setTimeout(() => {
-      if (codeform.value) {
-        codeform.value.clearValidate(["type", "count"]);
-      }
-    }, 200);
-  } catch (error) {
-    //console.log(error);
-  }
-};
-// 生成卡片loading
-let generateRedeemCodeLoading = ref(false);
-// 生成兑换码
-let generateCode = async () => {
-  try {
-    await codeform.value!.validate();
-    // 显示加载
-    generateRedeemCodeLoading.value = true;
-    let codeInfo = {
-      type: Number(generateRedeemCodeData.type),
-      count: Number(generateRedeemCodeData.count),
-      note: generateRedeemCodeData.note,
-    };
-    // 仓库发起请求
-    let result = await adminStore.genCode(codeInfo);
-    if (result.message) {
-      ElNotification({
-        type: "warning",
-        title: "Warning",
-        message: result.message,
-        duration: 3000,
-      });
-    } else {
-      ElNotification({
-        type: "success",
-        title: "Success",
-        message: "请及时下载兑换码",
-        duration: 3000,
-      });
-      clearGenerateRedeemCodeForm();
-    }
-  } catch (error) {
-    //console.log(error);
-  } finally {
-    generateRedeemCodeLoading.value = false;
-  }
 };
 
 // 无限制服务器
@@ -814,8 +524,6 @@ let queryUserData = reactive({
 let queryUserInfo = reactive({
   username: "暂无信息",
   permission: "暂无信息",
-  expire_at: "暂无信息",
-  unlimited_until: "暂无信息",
   game_id: "暂无信息",
   create_at: "暂无信息",
   ban_until: "",
@@ -825,18 +533,16 @@ let queryUserInfo = reactive({
 let setUserInfo = (userInfo: UserQueryDetail) => {
   queryUserInfo.username = userInfo.username;
   if (userInfo.permission == 0) {
-    queryUserInfo.permission = "游客";
+    queryUserInfo.permission = "普通用户";
   } else if (userInfo.permission == 1) {
-    queryUserInfo.permission = "激活用户";
+    queryUserInfo.permission = "开发者";
   } else if (userInfo.permission == 2) {
     queryUserInfo.permission = "系统管理员";
   } else {
     queryUserInfo.permission = "未知";
   }
   queryUserInfo.permission += `(${userInfo.permission})`;
-  queryUserInfo.expire_at = getTimeStr2(userInfo.expire_at);
   queryUserInfo.create_at = getTimeStr2(userInfo.create_at);
-  queryUserInfo.unlimited_until = getTimeStr2(userInfo.unlimited_until);
   queryUserInfo.ban_until = getTimeStr2(userInfo.ban_until);
   if (queryUserInfo.ban_until.startsWith("1970")) {
     queryUserInfo.ban_until = "";
@@ -844,7 +550,7 @@ let setUserInfo = (userInfo: UserQueryDetail) => {
   queryUserInfo.ban_reason = userInfo.ban_reason;
 
   if (userInfo.game_id == 0) {
-    queryUserInfo.game_id = "暂未获取";
+    queryUserInfo.game_id = "未绑定";
   } else {
     queryUserInfo.game_id = userInfo.game_id.toString();
   }
@@ -854,8 +560,6 @@ let clearUserInfo = () => {
   queryUserInfo.username = "暂无信息";
   queryUserInfo.game_id = "暂无信息";
   queryUserInfo.permission = "暂无信息";
-  queryUserInfo.expire_at = "暂无信息";
-  queryUserInfo.unlimited_until = "暂无信息";
   queryUserInfo.create_at = "暂无信息";
   queryUserInfo.ban_until = "";
   queryUserInfo.ban_reason = "";
@@ -1077,143 +781,6 @@ let setUserPermission = async () => {
   }
 };
 
-// 用户续费
-// 表单元素
-let extendUserExipreForm: EleFormRef = ref(null);
-// 表单数据
-let extendUserExipreData = reactive({
-  username: "",
-  hours: 0,
-});
-// 时长显示
-let extendUserExipreTimeStr = computed(() => {
-  return getTimeStr3(extendUserExipreData.hours);
-});
-// 清空表单
-let clearExtendUserExipreForm = () => {
-  extendUserExipreData.username = "";
-  extendUserExipreData.hours = 0;
-  // 清空校验提示
-  try {
-    setTimeout(() => {
-      if (extendUserExipreForm.value) {
-        extendUserExipreForm.value.clearValidate(["username", "hours"]);
-      }
-    }, 200);
-  } catch (error) {
-    //console.log(error);
-  }
-};
-// 续期卡片loading
-let extendUserExipreLoading = ref(false);
-// 用户续期
-let extendUserExipre = async () => {
-  try {
-    await extendUserExipreForm.value!.validate();
-    // 显示加载
-    extendUserExipreLoading.value = true;
-    let extendUserExipreInfo = {
-      username: extendUserExipreData.username,
-      seconds: extendUserExipreData.hours * 3600,
-    };
-    // 仓库发起请求
-    let result = await adminStore.userExtendExpireTime(extendUserExipreInfo);
-    if (result.success) {
-      ElNotification({
-        type: "success",
-        title: "Success",
-        message: result.message,
-        duration: 3000,
-      });
-      // 查询该用户
-      queryUserData.username = extendUserExipreData.username;
-      queryUser();
-      // 清除表单
-      clearExtendUserExipreForm();
-    } else {
-      ElNotification({
-        type: "warning",
-        title: "Warning",
-        message: result.message,
-        duration: 3000,
-      });
-    }
-  } catch (error: any) {
-    //console.log(error);
-  } finally {
-    extendUserExipreLoading.value = false;
-  }
-};
-
-// 无限制权限续期
-// 表单元素
-let extendUserUnlimitedForm: EleFormRef = ref(null);
-// 表单数据
-let extendUserUnlimitedData = reactive({
-  username: "",
-  hours: 0,
-});
-// 时长显示
-let extendUserUnlimitedTimeStr = computed(() => {
-  return getTimeStr3(extendUserUnlimitedData.hours);
-});
-// 清空表单
-let clearExtendUserUnlimitedForm = () => {
-  extendUserUnlimitedData.username = "";
-  extendUserUnlimitedData.hours = 0;
-  // 清空校验提示
-  try {
-    setTimeout(() => {
-      if (extendUserUnlimitedForm.value) {
-        extendUserUnlimitedForm.value.clearValidate(["username", "hours"]);
-      }
-    }, 200);
-  } catch (error) {
-    //console.log(error);
-  }
-};
-// 无限制权限续期卡片loading
-let extendUserUnlimitedLoading = ref(false);
-// 无限制权限续期
-let extendUserUnlimited = async () => {
-  try {
-    await extendUserUnlimitedForm.value!.validate();
-    // 显示加载
-    extendUserUnlimitedLoading.value = true;
-    let extendUserUnlimitedInfo = {
-      username: extendUserUnlimitedData.username,
-      seconds: extendUserUnlimitedData.hours * 3600,
-    };
-    // 仓库发起请求
-    let result = await adminStore.userExtendUnlimitedTime(
-      extendUserUnlimitedInfo
-    );
-    if (result.success) {
-      ElNotification({
-        type: "success",
-        title: "Success",
-        message: result.message,
-        duration: 3000,
-      });
-      // 查询该用户
-      queryUserData.username = extendUserUnlimitedData.username;
-      queryUser();
-      // 清除表单
-      clearExtendUserUnlimitedForm();
-    } else {
-      ElNotification({
-        type: "warning",
-        title: "Warning",
-        message: result.message,
-        duration: 3000,
-      });
-    }
-  } catch (error: any) {
-    //console.log(error);
-  } finally {
-    extendUserUnlimitedLoading.value = false;
-  }
-};
 
 onMounted(() => {
   // 查询无限制服务器
