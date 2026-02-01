@@ -1,6 +1,16 @@
 <template>
   <div>
-    <el-card shadow="hover" v-loading="createDefaultLoading || queryLoading">
+    <el-alert
+      title="警告: Bot 账号可能会因为异常游戏行为 (例如高频放置方块等) 被封禁, 我们强烈建议您通过游客登录来设置 Bot 账号"
+      type="error"
+      show-icon
+      :closable="false"
+    />
+    <el-card
+      style="margin-top: 12px"
+      shadow="hover"
+      v-loading="createDefaultLoading || queryLoading"
+    >
       <template #header>
         <div class="card-header">
           <span style="margin-right: 16px">Bot 账号</span>
@@ -100,6 +110,7 @@
       <template #header>
         <div class="card-header">
           手机登录
+          <el-tag type="error" style="margin-left: 5px">不推荐</el-tag>
           <el-tag type="warning" style="margin-left: 5px">人机验证</el-tag>
         </div>
       </template>
@@ -186,7 +197,10 @@
       style="margin-top: 12px"
     >
       <template #header>
-        <div class="card-header">邮箱登录</div>
+        <div class="card-header">
+          邮箱登录
+          <el-tag type="error" style="margin-left: 5px">不推荐</el-tag>
+        </div>
       </template>
       <div>
         <div class="card-footer">
@@ -252,7 +266,8 @@
       style="margin-top: 12px"
     >
       <template #header>
-        <div class="card-header">扫码登录</div>
+        扫码登录
+        <el-tag type="error" style="margin-left: 5px">不推荐</el-tag>
       </template>
       <div>
         <div class="card-footer">
