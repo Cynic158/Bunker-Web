@@ -5,9 +5,35 @@
         <div class="card-header">neOmega</div>
       </template>
       <div>
-        <span style="display: inline-block">
-          您可以通过申请地堡 (bunker) 服务来使用 neOmega
-        </span>
+        <div>您可以通过以下链接获取 neOmega 的最新版本：</div>
+        <el-space wrap style="margin-top: 16px">
+          <el-link
+            href="https://omega-1259160345.cos.accelerate.myqcloud.com/neomega_public/omega_launcher-windows.exe"
+            target="_blank"
+            >Windows</el-link
+          >
+
+          <el-divider direction="vertical" />
+          <el-link
+            href="https://omega-1259160345.cos.accelerate.myqcloud.com/neomega_public/omega_launcher-linux"
+            target="_blank"
+            >Linux</el-link
+          >
+
+          <el-divider direction="vertical" />
+          <el-link
+            href="https://omega-1259160345.cos.accelerate.myqcloud.com/neomega_public/omega_launcher-macos"
+            target="_blank"
+            >macOS</el-link
+          >
+
+          <el-divider direction="vertical" />
+          <el-link
+            href="https://omega-1259160345.cos.accelerate.myqcloud.com/neomega_public/omega_launcher-android"
+            target="_blank"
+            >Android</el-link
+          >
+        </el-space>
       </div>
     </el-card>
     <el-card style="margin-top: 12px" shadow="hover">
@@ -18,14 +44,13 @@
         <span style="display: inline-block">
           点击以下链接前往 ToolDelta 仓库查看使用教程
         </span>
-        <p style="margin-top: 16px">
-          <a
-            style="white-space: normal; word-wrap: break-word"
+        <div style="margin-top: 16px">
+          <el-link
             href="https://github.com/ToolDelta-Basic/ToolDelta"
             target="_blank"
-            >https://github.com/ToolDelta-Basic/ToolDelta
-          </a>
-        </p>
+            >https://github.com/ToolDelta-Basic/ToolDelta</el-link
+          >
+        </div>
       </div>
     </el-card>
     <el-card style="margin-top: 12px" shadow="hover">
@@ -33,17 +58,14 @@
         <div class="card-header">Eulogist</div>
       </template>
       <div>
-        <span>
-          点击以下链接前往 Eulogist 仓库查看使用教程
-        </span>
-        <p style="margin-top: 16px">
-          <a
-            style="white-space: normal; word-wrap: break-word"
+        <span> 点击以下链接前往 Eulogist 仓库查看使用教程 </span>
+        <div style="margin-top: 16px">
+          <el-link
             href="https://github.com/Happy2018new/Eulogist-Community-Release"
             target="_blank"
-            >https://github.com/Happy2018new/Eulogist-Community-Release
-          </a>
-        </p>
+            >https://github.com/Happy2018new/Eulogist-Community-Release</el-link
+          >
+        </div>
       </div>
     </el-card>
   </div>
